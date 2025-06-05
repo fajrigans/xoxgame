@@ -78,14 +78,20 @@
             display: none;
         }
         html, body {
-            overflow: hidden; /* Mencegah scrollbar muncul */
+            /* Mengubah properti CSS untuk penempatan konten yang lebih baik */
+            overflow: hidden; /* Tetap sembunyikan scrollbar */
+            display: flex;
+            flex-direction: column; /* Mengatur arah flex ke kolom */
+            align-items: center; /* Pusatkan secara horizontal */
+            min-height: 100vh; /* Memastikan body mengambil tinggi penuh viewport */
+            padding: 2rem 1rem; /* Menambahkan padding atas dan bawah yang cukup */
         }
     </style>
 </head>
-<body class="bg-gray-950 text-gray-200 flex flex-col items-center justify-center min-h-screen p-4 overflow-hidden">
+<body class="bg-gray-950 text-gray-200">
 
     <!-- Kontainer utama game -->
-    <div class="bg-gray-900 border border-gray-700 rounded-lg shadow-xl p-5 md:p-6 space-y-4 max-w-sm w-full flex flex-col items-center glow-border-blue">
+    <div class="bg-gray-900 border border-gray-700 rounded-lg shadow-xl p-5 md:p-6 space-y-4 max-w-md w-full flex flex-col items-center glow-border-blue">
         <h1 class="text-3xl md:text-4xl font-cyber text-green-400 glow-text-green mb-3 text-center">XOX Siber</h1>
 
         <!-- Area status game -->
@@ -102,7 +108,10 @@
         <button id="resetButton" class="mt-5 px-6 py-2 bg-violet-600 text-white font-cyber text-base rounded-full hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-300 glow-button">
             Mulai Ulang
         </button>
-        <ins style="width: 320px;height:50px" data-width="320" data-height="50" class="ib0a0917354" data-domain="//data963.click" data-affquery="/f64c05d7073ed0fa5d77/b0a0917354/?placementName=bannerad"><script src="//data963.click/js/responsive.js" async></script></ins>
+        <!-- Kontainer untuk iklan, memastikan ruang dialokasikan -->
+        <div class="mt-4 flex justify-center" style="width: 320px; height: 50px;">
+            <ins style="width: 320px;height:50px" data-width="320" data-height="50" class="ib0a0917354" data-domain="//data963.click" data-affquery="/f64c05d7073ed0fa5d77/b0a0917354/?placementName=bannerad"><script src="//data963.click/js/responsive.js" async></script></ins>
+        </div>
     </div>
 
     <script>
