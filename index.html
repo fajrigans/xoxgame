@@ -3,7 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XOX Siber</title>
+    <title>XOX Siber - Game Tic-Tac-Toe Modern</title>
+
+    <!-- Meta Tags untuk SEO dan Kemudahan Pencarian -->
+    <meta name="description" content="Mainkan game Tic-Tac-Toe (XOX) modern bergaya siber yang seru dan adiktif. Tantang teman Anda dalam mode 2 pemain.">
+    <meta name="keywords" content="tic tac toe, xox, game siber, game modern, game 2 pemain, game gratis, game online, permainan siber">
+    <meta name="author" content="Gemini AI">
+
+    <!-- Open Graph Tags untuk Berbagi di Media Sosial -->
+    <meta property="og:title" content="XOX Siber - Game Tic-Tac-Toe Modern">
+    <meta property="og:description" content="Mainkan game Tic-Tac-Toe (XOX) modern bergaya siber yang seru dan adiktif. Tantang teman Anda dalam mode 2 pemain.">
+    <meta property="og:image" content="https://cs.gstatic.com/gemini/multimodality/tic-tac-toe.jpg"> <!-- URL gambar logo yang Anda berikan -->
+    <meta property="og:url" content="URL_GAME_ANDA_DI_SINI"> <!-- Ganti dengan URL actual game Anda -->
+    <meta property="og:type" content="website">
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://cs.gstatic.com/gemini/multimodality/tic-tac-toe.jpg" type="image/jpeg"> <!-- URL gambar logo yang Anda berikan sebagai favicon -->
+
+
     <!-- Memuat Tailwind CSS dari CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -11,12 +28,16 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Space+Mono:wght@400;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            /* Latar belakang siber baru */
-            background-image: url('https://cs.gstatic.com/gemini/multimodality/red-and-blue-laser-background.jpg'); /* Gambar latar belakang siber yang diunggah */
-            background-size: cover; /* Memastikan gambar menutupi seluruh area */
-            background-position: center; /* Memusatkan gambar */
-            background-attachment: fixed; /* Membuat gambar tetap saat discroll (jika ada scroll) */
-            position: relative; /* Diperlukan untuk pseudo-element overlay */
+            background-color: #0A0A0A; /* Latar belakang gelap pekat */
+            /* Menambahkan pola grid siber menggunakan gradient CSS */
+            background-image:
+                repeating-linear-gradient(0deg, rgba(52, 211, 153, 0.05) 0px, transparent 1px, transparent 20px), /* Garis horizontal (nuansa hijau) */
+                repeating-linear-gradient(90deg, rgba(96, 165, 250, 0.05) 0px, transparent 1px, transparent 20px); /* Garis vertikal (nuansa biru) */
+            background-size: 20px 20px; /* Ukuran kotak grid */
+            background-position: center center;
+            background-attachment: fixed;
+            position: relative;
+            z-index: 0; /* Memastikan body adalah lapisan paling bawah */
         }
         body::before {
             content: "";
@@ -25,7 +46,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.85); /* Overlay gelap yang lebih pekat untuk kontras dan kedalaman */
+            background-color: rgba(0, 0, 0, 0.5); /* Overlay gelap untuk menjaga kontras dan kedalaman */
             z-index: -1; /* Pastikan di belakang konten */
         }
         .font-cyber {
@@ -81,6 +102,7 @@
         <button id="resetButton" class="mt-5 px-6 py-2 bg-violet-600 text-white font-cyber text-base rounded-full hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-300 glow-button">
             Mulai Ulang
         </button>
+        <ins style="width: 320px;height:50px" data-width="320" data-height="50" class="ib0a0917354" data-domain="//data963.click" data-affquery="/f64c05d7073ed0fa5d77/b0a0917354/?placementName=bannerad"><script src="//data963.click/js/responsive.js" async></script></ins>
     </div>
 
     <script>
