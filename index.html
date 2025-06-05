@@ -64,21 +64,21 @@
 <body class="bg-gray-950 text-gray-200 flex flex-col items-center justify-center min-h-screen p-4 overflow-hidden">
 
     <!-- Kontainer utama game -->
-    <div class="bg-gray-900 border border-gray-700 rounded-lg shadow-xl p-6 md:p-8 space-y-6 max-w-lg w-full flex flex-col items-center glow-border-blue">
-        <h1 class="text-4xl md:text-5xl font-cyber text-green-400 glow-text-green mb-4 text-center">XOX Siber</h1>
+    <div class="bg-gray-900 border border-gray-700 rounded-lg shadow-xl p-5 md:p-6 space-y-4 max-w-sm w-full flex flex-col items-center glow-border-blue">
+        <h1 class="text-3xl md:text-4xl font-cyber text-green-400 glow-text-green mb-3 text-center">XOX Siber</h1>
 
         <!-- Area status game -->
-        <div id="gameStatus" class="text-2xl md:text-3xl font-cyber text-blue-400 glow-text-blue mb-4 text-center min-h-[3rem]">
+        <div id="gameStatus" class="text-xl md:text-2xl font-cyber text-blue-400 glow-text-blue mb-3 text-center min-h-[2.5rem]">
             Giliran: X
         </div>
 
         <!-- Papan permainan -->
-        <div id="gameBoard" class="grid grid-cols-3 gap-2 md:gap-3 bg-gray-800 p-3 md:p-4 rounded-md border border-gray-700 glow-border-green">
+        <div id="gameBoard" class="grid grid-cols-3 gap-1 md:gap-2 bg-gray-800 p-2 md:p-3 rounded-md border border-gray-700 glow-border-green">
             <!-- Sel-sel papan akan dibuat oleh JavaScript -->
         </div>
 
         <!-- Tombol reset -->
-        <button id="resetButton" class="mt-6 px-8 py-3 bg-violet-600 text-white font-cyber text-lg rounded-full hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-300 glow-button">
+        <button id="resetButton" class="mt-5 px-6 py-2 bg-violet-600 text-white font-cyber text-base rounded-full hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-300 glow-button">
             Mulai Ulang
         </button>
     </div>
@@ -116,9 +116,9 @@
             board.forEach((_cell, index) => {
                 const cell = document.createElement('div');
                 cell.classList.add(
-                    'w-24', 'h-24', 'md:w-28', 'md:h-28', // Ukuran sel responsif
+                    'w-20', 'h-20', 'md:w-24', 'md:h-24', // Ukuran sel responsif yang lebih kecil
                     'bg-gray-850', 'border-2', 'border-gray-700', 'rounded-md',
-                    'flex', 'items-center', 'justify-center', 'text-5xl', 'md:text-6xl',
+                    'flex', 'items-center', 'justify-center', 'text-4xl', 'md:text-5xl', // Ukuran teks mark lebih kecil
                     'font-cyber', 'cursor-pointer', 'select-none',
                     'transition-all', 'duration-200', 'ease-in-out'
                 );
