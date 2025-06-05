@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XOX Siber</title>
+    <!-- Memuat Tailwind CSS dari CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Konfigurasi kustom Tailwind */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Space+Mono:wght@400;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Latar belakang siber baru */
+            background-image: url('https://cs.gstatic.com/gemini/multimodality/red-and-blue-laser-background.jpg'); /* Gambar latar belakang siber yang diunggah */
+            background-size: cover; /* Memastikan gambar menutupi seluruh area */
+            background-position: center; /* Memusatkan gambar */
+            background-attachment: fixed; /* Membuat gambar tetap saat discroll (jika ada scroll) */
+            position: relative; /* Diperlukan untuk pseudo-element overlay */
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85); /* Overlay gelap yang lebih pekat untuk kontras dan kedalaman */
+            z-index: -1; /* Pastikan di belakang konten */
+        }
+        .font-cyber {
+            font-family: 'Space Mono', monospace;
+        }
+        /* Efek glow untuk teks dan elemen aktif */
+        .glow-text-green {
+            text-shadow: 0 0 5px #34D399, 0 0 10px #34D399, 0 0 15px #34D399; /* green-400 */
+        }
+        .glow-text-blue {
+            text-shadow: 0 0 5px #60A5FA, 0 0 10px #60A5FA, 0 0 15px #60A5FA; /* blue-400 */
+        }
+        .glow-border-green {
+            box-shadow: 0 0 8px #34D399; /* green-400 */
+        }
+        .glow-border-blue {
+            box-shadow: 0 0 8px #60A5FA; /* blue-400 */
+        }
+        .glow-button {
+            box-shadow: 0 0 8px #A78BFA, 0 0 15px #A78BFA; /* violet-400 */
+            transition: all 0.3s ease-in-out;
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 15px #A78BFA, 0 0 25px #A78BFA, 0 0 35px #A78BFA;
+            transform: translateY(-2px);
+        }
+        /* Menyembunyikan scrollbar untuk tampilan yang lebih bersih */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        html, body {
+            overflow: hidden; /* Mencegah scrollbar muncul */
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-200 flex flex-col items-center justify-center min-h-screen p-4 overflow-hidden">
+
+    <!-- Kontainer utama game -->
+    <div class="bg-gray-900 border border-gray-700 rounded-lg shadow-xl p-6 md:p-8 space-y-6 max-w-lg w-full flex flex-col items-center glow-border-blue">
+        <h1 class="text-4xl md:text-5xl font-cyber text-green-400 glow-text-green mb-4 text-center">XOX Siber</h1>
+
+        <!-- Area status game -->
+        <div id="gameStatus" class="text-2xl md:text-3xl font-cyber text-blue-400 glow-text-blue mb-4 text-center min-h-[3rem]">
+            Giliran: X
+        </div>
+
+        <!-- Papan permainan -->
+        <div id="gameBoard" class="grid grid-cols-3 gap-2 md:gap-3 bg-gray-800 p-3 md:p-4 rounded-md border border-gray-700 glow-border-green">
+            <!-- Sel-sel papan akan dibuat oleh JavaScript -->
+        </div>
+
+        <!-- Tombol reset -->
+        <button id="resetButton" class="mt-6 px-8 py-3 bg-violet-600 text-white font-cyber text-lg rounded-full hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-300 glow-button">
+            Mulai Ulang
+        </button>
+    </div>
+
+    <script>
+        // Mendapatkan elemen DOM yang diperlukan
+        const gameBoard = document.getElementById('gameBoard');
+        const gameStatus = document.getElementById('gameStatus');
+        const resetButton = document.getElementById('resetButton');
+
+        // Variabel state game
+        let board = ['', '', '', '', '', '', '', '', '']; // Representasi papan 3x3
+        let currentPlayer = 'X'; // Pemain saat ini (X atau O)
+        let gameOver = false; // Status game (true jika game berakhir)
+
+        // Pola kemenangan untuk Tic-Tac-Toe
+        const winningPatterns = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Baris
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Kolom
+            [0, 4, 8], [2, 4, 6]             // Diagonal
+        ];
+
+        /**
+         * Menginisialisasi atau mereset game.
+         * Mengosongkan papan, mengatur ulang pemain, dan memperbarui UI.
+         */
+        function initializeGame() {
+            board = ['', '', '', '', '', '', '', '', '']; // Reset papan kosong
+            currentPlayer = 'X'; // Mulai dengan pemain X
+            gameOver = false; // Game belum berakhir
+            gameBoard.innerHTML = ''; // Hapus sel-sel lama dari DOM
+            gameStatus.classList.remove('glow-text-green', 'glow-text-blue'); // Hapus efek glow status
+
+            // Buat sel papan baru
+            board.forEach((_cell, index) => {
+                const cell = document.createElement('div');
+                cell.classList.add(
+                    'w-24', 'h-24', 'md:w-28', 'md:h-28', // Ukuran sel responsif
+                    'bg-gray-850', 'border-2', 'border-gray-700', 'rounded-md',
+                    'flex', 'items-center', 'justify-center', 'text-5xl', 'md:text-6xl',
+                    'font-cyber', 'cursor-pointer', 'select-none',
+                    'transition-all', 'duration-200', 'ease-in-out'
+                );
+                cell.id = `cell-${index}`; // Memberikan ID unik untuk setiap sel
+                cell.addEventListener('click', () => handleCellClick(index)); // Menambahkan event listener
+                gameBoard.appendChild(cell); // Menambahkan sel ke papan
+            });
+
+            updateStatus(`Giliran: ${currentPlayer}`); // Perbarui status awal
+        }
+
+        /**
+         * Menangani klik pada sel papan.
+         * Memperbarui papan, memeriksa kemenangan/seri, dan mengganti pemain.
+         * @param {number} index - Indeks sel yang diklik.
+         */
+        function handleCellClick(index) {
+            // Jika sel sudah terisi atau game sudah berakhir, tidak lakukan apa-apa
+            if (board[index] !== '' || gameOver) {
+                return;
+            }
+
+            // Perbarui papan dengan gerakan pemain saat ini
+            board[index] = currentPlayer;
+            document.getElementById(`cell-${index}`).textContent = currentPlayer; // Tampilkan mark di UI
+
+            // Tambahkan kelas warna dan glow berdasarkan pemain
+            const cellElement = document.getElementById(`cell-${index}`);
+            if (currentPlayer === 'X') {
+                cellElement.classList.add('text-green-400', 'glow-text-green');
+            } else {
+                cellElement.classList.add('text-blue-400', 'glow-text-blue');
+            }
+
+            // Periksa apakah ada pemenang
+            if (checkWin()) {
+                updateStatus(`Pemain ${currentPlayer} MENANG!`, true, currentPlayer);
+                gameOver = true;
+                return;
+            }
+
+            // Periksa apakah game seri (semua sel terisi tapi tidak ada pemenang)
+            if (checkDraw()) {
+                updateStatus('Game SERI!', true);
+                gameOver = true;
+                return;
+            }
+
+            // Ganti pemain
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            updateStatus(`Giliran: ${currentPlayer}`); // Perbarui status
+        }
+
+        /**
+         * Memeriksa apakah ada pemain yang menang.
+         * @returns {boolean} - True jika ada pemenang, false jika tidak.
+         */
+        function checkWin() {
+            return winningPatterns.some(pattern => {
+                const [a, b, c] = pattern;
+                // Memeriksa apakah ketiga sel dalam pola sama dan tidak kosong
+                return board[a] !== '' && board[a] === board[b] && board[a] === board[c];
+            });
+        }
+
+        /**
+         * Memeriksa apakah game berakhir seri.
+         * @returns {boolean} - True jika seri, false jika tidak.
+         */
+        function checkDraw() {
+            // Jika tidak ada pemenang dan semua sel terisi
+            return board.every(cell => cell !== '');
+        }
+
+        /**
+         * Memperbarui teks status game dan menambahkan efek visual jika game berakhir.
+         * @param {string} message - Pesan status yang akan ditampilkan.
+         * @param {boolean} [isFinal=false] - True jika ini adalah pesan akhir (menang/seri).
+         * @param {string} [winner=null] - Pemain yang menang (jika ada).
+         */
+        function updateStatus(message, isFinal = false, winner = null) {
+            gameStatus.textContent = message;
+            gameStatus.classList.remove('text-green-400', 'text-blue-400'); // Hapus warna sebelumnya
+
+            if (isFinal) {
+                // Tambahkan efek glow dan warna untuk pesan akhir
+                if (winner === 'X') {
+                    gameStatus.classList.add('text-green-400', 'glow-text-green');
+                } else if (winner === 'O') {
+                    gameStatus.classList.add('text-blue-400', 'glow-text-blue');
+                } else { // Seri
+                    gameStatus.classList.add('text-violet-400', 'glow-text-blue'); // Warna umum untuk seri
+                }
+            } else {
+                // Warna default untuk giliran pemain
+                if (currentPlayer === 'X') {
+                    gameStatus.classList.add('text-green-400');
+                } else {
+                    gameStatus.classList.add('text-blue-400');
+                }
+            }
+        }
+
+        // Menambahkan event listener untuk tombol reset
+        resetButton.addEventListener('click', initializeGame);
+
+        // Inisialisasi game saat halaman dimuat
+        window.onload = initializeGame;
+    </script>
+</body>
+</html>
