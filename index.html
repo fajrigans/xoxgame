@@ -6,23 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XOX Siber - Game Tic-Tac-Toe Modern</title>
 
-    <!-- Meta Tags untuk SEO dan Kemudahan Pencarian -->
-    <meta name="description" content="Mainkan game Tic-Tac-Toe (XOX) modern bergaya siber yang seru dan adiktif. Tantang teman Anda dalam mode 2 pemain.">
-    <meta name="keywords" content="tic tac toe, xox, game siber, game modern, game 2 pemain, game gratis, game online, permainan siber">
+    <meta name="description" content="Mainkan game Tic-Tac-Toe (XOX) modern bergaya siber yang seru dan adiktif. Tantang AI canggih dalam mode 1 pemain atau teman Anda dalam mode 2 pemain.">
+    <meta name="keywords" content="tic tac toe, xox, game siber, game modern, game 2 pemain, game gratis, game online, permainan siber, AI game, Minimax, tebak-tebakan">
     <meta name="author" content="Gemini AI">
 
-    <!-- Open Graph Tags untuk Berbagi di Media Sosial -->
     <meta property="og:title" content="XOX Siber - Game Tic-Tac-Toe Modern">
-    <meta property="og:description" content="Mainkan game Tic-Tac-Toe (XOX) modern bergaya siber yang seru dan adiktif. Tantang teman Anda dalam mode 2 pemain.">
-    <meta property="og:image" content="https://cs.gstatic.com/gemini/multimodality/tic-tac-toe.jpg"> <!-- URL gambar logo yang Anda berikan -->
-    <meta property="og:url" content="URL_GAME_ANDA_DI_SINI"> <!-- Ganti dengan URL actual game Anda -->
+    <meta property="og:description" content="Mainkan game Tic-Tac-Toe (XOX) modern bergaya siber yang seru dan adiktif. Tantang AI canggih dalam mode 1 pemain atau teman Anda dalam mode 2 pemain.">
+    <meta property="og:image" content="https://cs.gstatic.com/gemini/multimodality/tic-tac-toe.jpg">
+    <meta property="og:url" content="URL_GAME_ANDA_DI_SINI">
     <meta property="og:type" content="website">
 
-    <!-- Favicon -->
-    <link rel="icon" href="https://cs.gstatic.com/gemini/multimodality/tic-tac-toe.jpg" type="image/jpeg"> <!-- URL gambar logo yang Anda berikan sebagai favicon -->
+    <link rel="icon" href="https://cs.gstatic.com/gemini/multimodality/tic-tac-toe.jpg" type="image/jpeg">
 
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-KF6MR71D9W"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KF6MR71D9W"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -30,7 +26,6 @@
 
   gtag('config', 'G-KF6MR71D9W');
 </script>
-    <!-- Memuat Tailwind CSS dari CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Konfigurasi kustom Tailwind */
@@ -87,58 +82,60 @@
             display: none;
         }
         html, body {
-            /* Mengubah properti CSS untuk penempatan konten yang lebih baik */
-            overflow: hidden; /* Tetap sembunyikan scrollbar */
+            overflow: hidden;
             display: flex;
-            flex-direction: column; /* Mengatur arah flex ke kolom */
-            align-items: center; /* Pusatkan secara horizontal */
-            min-height: 100vh; /* Memastikan body mengambil tinggi penuh viewport */
-            padding: 2rem 1rem; /* Menambahkan padding atas dan bawah yang cukup */
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1rem;
         }
     </style>
 </head>
 <body class="bg-gray-950 text-gray-200">
 
-    <!-- Kontainer utama game -->
     <div class="bg-gray-900 border border-gray-700 rounded-lg shadow-xl p-5 md:p-6 space-y-4 max-w-md w-full flex flex-col items-center glow-border-blue">
         <h1 class="text-3xl md:text-4xl font-cyber text-green-400 glow-text-green mb-3 text-center">XOX Siber</h1>
 
-        <!-- Area status game -->
+        <div class="flex space-x-4 mb-4">
+            <button id="modeAiButton" class="px-4 py-2 bg-blue-600 text-white font-cyber text-sm rounded-full hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 glow-button">
+                Pemain vs. AI
+            </button>
+            <button id="modeHumanButton" class="px-4 py-2 bg-gray-600 text-white font-cyber text-sm rounded-full hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300">
+                Pemain vs. Pemain
+            </button>
+        </div>
+
         <div id="gameStatus" class="text-xl md:text-2xl font-cyber text-blue-400 glow-text-blue mb-3 text-center min-h-[2.5rem]">
             Giliran: X
         </div>
 
-        <!-- Papan permainan -->
         <div id="gameBoard" class="grid grid-cols-3 gap-1 md:gap-2 bg-gray-800 p-2 md:p-3 rounded-md border border-gray-700 glow-border-green">
-            <!-- Sel-sel papan akan dibuat oleh JavaScript -->
-        </div>
+            </div>
 
-        <!-- Tombol reset -->
         <button id="resetButton" class="mt-5 px-6 py-2 bg-violet-600 text-white font-cyber text-base rounded-full hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-300 glow-button">
             Mulai Ulang
         </button>
-        <!-- Kontainer untuk iklan, memastikan ruang dialokasikan -->
         <div class="mt-4 flex justify-center" style="width: 320px; height: 50px;">
             <ins style="width: 320px;height:50px" data-width="320" data-height="50" class="ib0a0917354" data-domain="//data963.click" data-affquery="/f64c05d7073ed0fa5d77/b0a0917354/?placementName=bannerad"><script src="//data963.click/js/responsive.js" async></script></ins>
         </div>
     </div>
 
     <script>
-        // Mendapatkan elemen DOM yang diperlukan
         const gameBoard = document.getElementById('gameBoard');
         const gameStatus = document.getElementById('gameStatus');
         const resetButton = document.getElementById('resetButton');
+        const modeAiButton = document.getElementById('modeAiButton');
+        const modeHumanButton = document.getElementById('modeHumanButton');
 
-        // Variabel state game
-        let board = ['', '', '', '', '', '', '', '', '']; // Representasi papan 3x3
-        let currentPlayer = 'X'; // Pemain saat ini (X atau O)
-        let gameOver = false; // Status game (true jika game berakhir)
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let currentPlayer = 'X';
+        let gameOver = false;
+        let playerMode = 'ai'; // Default mode: 'ai' (Pemain vs. AI), can be 'human' (Pemain vs. Pemain)
 
-        // Pola kemenangan untuk Tic-Tac-Toe
         const winningPatterns = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Baris
-            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Kolom
-            [0, 4, 8], [2, 4, 6]             // Diagonal
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+            [0, 4, 8], [2, 4, 6]             // Diagonals
         ];
 
         /**
@@ -146,28 +143,41 @@
          * Mengosongkan papan, mengatur ulang pemain, dan memperbarui UI.
          */
         function initializeGame() {
-            board = ['', '', '', '', '', '', '', '', '']; // Reset papan kosong
-            currentPlayer = 'X'; // Mulai dengan pemain X
-            gameOver = false; // Game belum berakhir
-            gameBoard.innerHTML = ''; // Hapus sel-sel lama dari DOM
-            gameStatus.classList.remove('glow-text-green', 'glow-text-blue'); // Hapus efek glow status
+            board = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            gameOver = false;
+            gameBoard.innerHTML = '';
+            gameStatus.classList.remove('glow-text-green', 'glow-text-blue', 'text-violet-400');
 
-            // Buat sel papan baru
+            // Set button styles based on current playerMode
+            if (playerMode === 'ai') {
+                modeAiButton.classList.add('bg-blue-600', 'glow-button');
+                modeAiButton.classList.remove('bg-gray-600');
+                modeHumanButton.classList.add('bg-gray-600');
+                modeHumanButton.classList.remove('bg-blue-600', 'glow-button');
+            } else {
+                modeHumanButton.classList.add('bg-blue-600', 'glow-button');
+                modeHumanButton.classList.remove('bg-gray-600');
+                modeAiButton.classList.add('bg-gray-600');
+                modeAiButton.classList.remove('bg-blue-600', 'glow-button');
+            }
+
+
             board.forEach((_cell, index) => {
                 const cell = document.createElement('div');
                 cell.classList.add(
-                    'w-20', 'h-20', 'md:w-24', 'md:h-24', // Ukuran sel responsif yang lebih kecil
+                    'w-20', 'h-20', 'md:w-24', 'md:h-24',
                     'bg-gray-850', 'border-2', 'border-gray-700', 'rounded-md',
-                    'flex', 'items-center', 'justify-center', 'text-4xl', 'md:text-5xl', // Ukuran teks mark lebih kecil
+                    'flex', 'items-center', 'justify-center', 'text-4xl', 'md:text-5xl',
                     'font-cyber', 'cursor-pointer', 'select-none',
                     'transition-all', 'duration-200', 'ease-in-out'
                 );
-                cell.id = `cell-${index}`; // Memberikan ID unik untuk setiap sel
-                cell.addEventListener('click', () => handleCellClick(index)); // Menambahkan event listener
-                gameBoard.appendChild(cell); // Menambahkan sel ke papan
+                cell.id = `cell-${index}`;
+                cell.addEventListener('click', () => handleCellClick(index));
+                gameBoard.appendChild(cell);
             });
 
-            updateStatus(`Giliran: ${currentPlayer}`); // Perbarui status awal
+            updateStatus(`Giliran: ${currentPlayer}`);
         }
 
         /**
@@ -175,52 +185,82 @@
          * Memperbarui papan, memeriksa kemenangan/seri, dan mengganti pemain.
          * @param {number} index - Indeks sel yang diklik.
          */
-        function handleCellClick(index) {
-            // Jika sel sudah terisi atau game sudah berakhir, tidak lakukan apa-apa
+        async function handleCellClick(index) {
             if (board[index] !== '' || gameOver) {
                 return;
             }
 
-            // Perbarui papan dengan gerakan pemain saat ini
-            board[index] = currentPlayer;
-            document.getElementById(`cell-${index}`).textContent = currentPlayer; // Tampilkan mark di UI
+            // Human player (X or O depending on mode) makes a move
+            makeMove(index, currentPlayer);
 
-            // Tambahkan kelas warna dan glow berdasarkan pemain
-            const cellElement = document.getElementById(`cell-${index}`);
-            if (currentPlayer === 'X') {
-                cellElement.classList.add('text-green-400', 'glow-text-green');
-            } else {
-                cellElement.classList.add('text-blue-400', 'glow-text-blue');
-            }
-
-            // Periksa apakah ada pemenang
             if (checkWin()) {
                 updateStatus(`Pemain ${currentPlayer} MENANG!`, true, currentPlayer);
                 gameOver = true;
                 return;
             }
 
-            // Periksa apakah game seri (semua sel terisi tapi tidak ada pemenang)
             if (checkDraw()) {
                 updateStatus('Game SERI!', true);
                 gameOver = true;
                 return;
             }
 
-            // Ganti pemain
+            // Switch player
             currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-            updateStatus(`Giliran: ${currentPlayer}`); // Perbarui status
+            updateStatus(`Giliran: ${currentPlayer}`);
+
+            // If AI mode and it's AI's turn
+            if (playerMode === 'ai' && currentPlayer === 'O' && !gameOver) {
+                updateStatus(`Giliran: ${currentPlayer} (AI Thinking...)`);
+                await new Promise(resolve => setTimeout(resolve, 700));
+
+                if (!gameOver) {
+                    const bestMove = findBestMove(board, currentPlayer);
+                    makeMove(bestMove, currentPlayer);
+
+                    if (checkWin()) {
+                        updateStatus(`Pemain ${currentPlayer} (AI) MENANG!`, true, currentPlayer);
+                        gameOver = true;
+                        return;
+                    }
+
+                    if (checkDraw()) {
+                        updateStatus('Game SERI!', true);
+                        gameOver = true;
+                        return;
+                    }
+
+                    // Switch back to human player (X)
+                    currentPlayer = 'X';
+                    updateStatus(`Giliran: ${currentPlayer}`);
+                }
+            }
+        }
+
+        /**
+         * Melakukan gerakan di papan dan memperbarui UI.
+         * @param {number} index - Indeks sel untuk membuat gerakan.
+         * @param {string} player - Pemain ('X' atau 'O').
+         */
+        function makeMove(index, player) {
+            board[index] = player;
+            const cellElement = document.getElementById(`cell-${index}`);
+            cellElement.textContent = player;
+            if (player === 'X') {
+                cellElement.classList.add('text-green-400', 'glow-text-green');
+            } else {
+                cellElement.classList.add('text-blue-400', 'glow-text-blue');
+            }
         }
 
         /**
          * Memeriksa apakah ada pemain yang menang.
          * @returns {boolean} - True jika ada pemenang, false jika tidak.
          */
-        function checkWin() {
+        function checkWin(currentBoard = board) {
             return winningPatterns.some(pattern => {
                 const [a, b, c] = pattern;
-                // Memeriksa apakah ketiga sel dalam pola sama dan tidak kosong
-                return board[a] !== '' && board[a] === board[b] && board[a] === board[c];
+                return currentBoard[a] !== '' && currentBoard[a] === currentBoard[b] && currentBoard[a] === currentBoard[c];
             });
         }
 
@@ -228,9 +268,8 @@
          * Memeriksa apakah game berakhir seri.
          * @returns {boolean} - True jika seri, false jika tidak.
          */
-        function checkDraw() {
-            // Jika tidak ada pemenang dan semua sel terisi
-            return board.every(cell => cell !== '');
+        function checkDraw(currentBoard = board) {
+            return !checkWin(currentBoard) && currentBoard.every(cell => cell !== '');
         }
 
         /**
@@ -241,31 +280,111 @@
          */
         function updateStatus(message, isFinal = false, winner = null) {
             gameStatus.textContent = message;
-            gameStatus.classList.remove('text-green-400', 'text-blue-400'); // Hapus warna sebelumnya
+            gameStatus.classList.remove('text-green-400', 'text-blue-400', 'text-violet-400');
 
             if (isFinal) {
-                // Tambahkan efek glow dan warna untuk pesan akhir
                 if (winner === 'X') {
                     gameStatus.classList.add('text-green-400', 'glow-text-green');
                 } else if (winner === 'O') {
                     gameStatus.classList.add('text-blue-400', 'glow-text-blue');
-                } else { // Seri
-                    gameStatus.classList.add('text-violet-400', 'glow-text-blue'); // Warna umum untuk seri
+                } else { // Draw
+                    gameStatus.classList.add('text-violet-400', 'glow-text-blue');
                 }
             } else {
-                // Warna default untuk giliran pemain
                 if (currentPlayer === 'X') {
                     gameStatus.classList.add('text-green-400');
-                } else {
+                } else if (currentPlayer === 'O') {
                     gameStatus.classList.add('text-blue-400');
                 }
             }
         }
 
-        // Menambahkan event listener untuk tombol reset
+        // --- AI (Minimax) Logic ---
+
+        /**
+         * Menemukan gerakan terbaik untuk AI menggunakan algoritma Minimax.
+         * @param {Array<string>} currentBoard - Keadaan papan saat ini.
+         * @param {string} player - Pemain saat ini (AI, 'O').
+         * @returns {number} - Indeks gerakan terbaik.
+         */
+        function findBestMove(currentBoard, player) {
+            let bestScore = -Infinity;
+            let bestMove = -1;
+
+            for (let i = 0; i < currentBoard.length; i++) {
+                if (currentBoard[i] === '') {
+                    currentBoard[i] = player;
+                    let score = minimax(currentBoard, 0, false);
+                    currentBoard[i] = '';
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestMove = i;
+                    }
+                }
+            }
+            return bestMove;
+        }
+
+        /**
+         * Implementasi algoritma Minimax.
+         * @param {Array<string>} currentBoard - Keadaan papan saat ini.
+         * @param {number} depth - Kedalaman pohon pencarian (tidak digunakan secara eksplisit untuk Tic-Tac-Toe karena pohonnya kecil).
+         * @param {boolean} isMaximizingPlayer - True jika ini adalah giliran pemain yang memaksimalkan (AI), false jika tidak (pemain manusia).
+         * @returns {number} - Skor Minimax untuk keadaan papan saat ini.
+         */
+        function minimax(currentBoard, depth, isMaximizingPlayer) {
+            if (checkWin(currentBoard)) {
+                return isMaximizingPlayer ? -1 : 1;
+            }
+            if (checkDraw(currentBoard)) {
+                return 0;
+            }
+
+            let availableSpots = currentBoard.filter(cell => cell === '').length;
+            if (availableSpots === 0) {
+                return 0;
+            }
+
+            if (isMaximizingPlayer) { // AI's turn (O)
+                let bestScore = -Infinity;
+                for (let i = 0; i < currentBoard.length; i++) {
+                    if (currentBoard[i] === '') {
+                        currentBoard[i] = 'O';
+                        let score = minimax(currentBoard, depth + 1, false);
+                        currentBoard[i] = '';
+                        bestScore = Math.max(score, bestScore);
+                    }
+                }
+                return bestScore;
+            } else { // Human's turn (X)
+                let bestScore = Infinity;
+                for (let i = 0; i < currentBoard.length; i++) {
+                    if (currentBoard[i] === '') {
+                        currentBoard[i] = 'X';
+                        let score = minimax(currentBoard, depth + 1, true);
+                        currentBoard[i] = '';
+                        bestScore = Math.min(score, bestScore);
+                    }
+                }
+                return bestScore;
+            }
+        }
+
+        // --- Event Listeners ---
+
         resetButton.addEventListener('click', initializeGame);
 
-        // Inisialisasi game saat halaman dimuat
+        modeAiButton.addEventListener('click', () => {
+            playerMode = 'ai';
+            initializeGame();
+        });
+
+        modeHumanButton.addEventListener('click', () => {
+            playerMode = 'human';
+            initializeGame();
+        });
+
+        // Initialize the game when the page loads
         window.onload = initializeGame;
     </script>
 </body>
