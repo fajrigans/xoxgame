@@ -12,20 +12,22 @@
     <meta name="author" content="Gemini AI">
 
     <meta property="og:title" content="XOX Siber - Game Tic-Tac-Toe Modern">
-    <meta property="og:description" content="Mainkan game Tic-Tac-Toe (XOX) modern bergaya siber di papan 5x5 yang lebih besar. Tantang AI canggih dalam mode 2 pemain.">
+    <meta property="og:description" content="Mainkan game Tic-Tac-Toe (XOX) modern bergaya siber di papan 5x5 yang lebih besar. Tantang AI canggih dalam mode 1 pemain atau teman Anda dalam mode 2 pemain.">
     <meta property="og:image" content="https://cs.gstatic.com/gemini/multimodality/tic-tac-toe.jpg">
     <meta property="og:url" content="URL_GAME_ANDA_DI_SINI">
     <meta property="og:type" content="website">
     
+
     <link rel="icon" href="https://cs.gstatic.com/gemini/multimodality/tic-tac-toe.jpg" type="image/jpeg">
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KF6MR71D9W"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-KF6MR71D9W');
-    </script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KF6MR71D9W');
+</script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Konfigurasi kustom Tailwind */
@@ -141,692 +143,573 @@
             max-width: 90%;
             width: 400px;
         }
-
-        /* BARU: Style untuk Shop Modal */
-        .shop-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.85);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1001;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            overflow-y: auto; /* Allow scrolling if shop content is long */
-        }
-        .shop-modal-content {
-            background-color: #1A1A1A;
-            border: 2px solid #A78BFA;
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(167, 139, 250, 0.7);
-            max-width: 95%;
-            width: 700px;
-            max-height: 90vh; /* Max height for scrolling */
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        .shop-items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 1rem;
-            justify-items: center;
-        }
-        .shop-item {
-            background-color: #0A0A0A;
-            border: 1px solid #4B5563; /* Gray-600 */
-            border-radius: 8px;
-            padding: 0.8rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-        }
-        .shop-item:hover {
-            border-color: #60A5FA; /* Blue glow on hover */
-            box-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
-            transform: translateY(-3px);
-        }
-        .shop-item.unlocked {
-            border-color: #34D399; /* Green glow for unlocked */
-            box-shadow: 0 0 10px rgba(52, 211, 153, 0.5);
-        }
-        .shop-item.selected {
-            border: 3px solid #A78BFA; /* Violet glow for selected */
-            box-shadow: 0 0 15px rgba(167, 139, 250, 0.8);
-            transform: scale(1.03);
-        }
-        .shop-item img {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            border-radius: 4px;
-        }
-        .shop-item-price {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            color: #EAB308; /* Amber-500 for gold */
-        }
-        .shop-item-price svg {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
-        }
-        .shop-item button {
-            padding: 0.4rem 0.8rem;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            transition: background-color 0.2s;
-        }
-        .shop-item button.buy-button {
-            background-color: #60A5FA; /* Blue-400 */
-            color: #1A1A1A;
-        }
-        .shop-item button.buy-button:hover {
-            background-color: #3B82F6; /* Blue-500 */
-        }
-        .shop-item button.select-button {
-            background-color: #A78BFA; /* Violet-400 */
-            color: #1A1A1A;
-        }
-        .shop-item button.select-button:hover {
-            background-color: #8B5CF6; /* Violet-500 */
-        }
-        .shop-item .selected-text, .shop-item .unlocked-text {
-            color: #34D399; /* Green-400 */
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-        .shop-item .selected-text {
-            color: #A78BFA; /* Violet-400 */
-        }
-        .current-coins {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #EAB308; /* Amber-500 */
-            margin-bottom: 1rem;
-            justify-content: center;
-        }
-        .current-coins svg {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-        }
-        /* Style untuk gambar X/O di sel game */
-        .game-cell img {
-            width: 80%; /* Adjust as needed */
-            height: 80%; /* Adjust as needed */
-            object-fit: contain;
-            user-select: none;
-            -webkit-user-drag: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
     </style>
 </head>
 <body class="bg-gray-950 text-gray-200">
 
-    <script async="async" data-cfasync="false" src="//your.monetag.vignette.script.js"></script>
+    <script async="async" data-cfasync="false" src="//your.monetag.vignette.script.js"></script> 
     <script async="async" data-cfasync="false" src="//your.monetag.popunder.script.js"></script>
-    <div class="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
-        <h1 class="text-4xl sm:text-5xl font-bold font-cyber mb-6 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 glow-text-green text-center">
-            XOX Siber
-        </h1>
 
-        <div class="flex justify-around w-full max-w-sm mb-6 text-xl font-cyber">
-            <div class="text-green-400 flex items-center gap-2">
-                Pemain (X): <span id="playerXScore" class="glow-text-green">0</span>
-            </div>
-            <div class="text-blue-400 flex items-center gap-2">
-                AI (O): <span id="playerOScore" class="glow-text-blue">0</span>
-            </div>
+    <div class="bg-gray-900 border border-gray-700 rounded-lg shadow-xl p-5 md:p-6 space-y-4 max-w-md w-full flex flex-col items-center glow-border-blue">
+        <h1 class="text-3xl md:text-4xl font-cyber text-green-400 glow-text-green mb-3 text-center">XOX Siber</h1>
+
+        <div class="text-xl md:text-2xl font-cyber text-yellow-400 glow-text-blue text-center">
+            Koin Anda: <span id="playerCoinsDisplay">0</span>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-            <div id="coinDisplay" class="current-coins">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 text-yellow-400">
-                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z" clip-rule="evenodd" />
-                </svg>
-                <span id="playerCoins">0</span> Koin
-            </div>
-            <button id="openShopBtn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded glow-button font-cyber">
-                Toko Skin
+        <div class="flex space-x-4 mb-4">
+            <button id="modeAiButton" class="px-4 py-2 bg-blue-600 text-white font-cyber text-sm rounded-full hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 glow-button">
+                Pemain vs. AI
+            </button>
+            <button id="modeHumanButton" class="px-4 py-2 bg-gray-600 text-white font-cyber text-sm rounded-full hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300">
+                Pemain vs. Pemain
             </button>
         </div>
 
-
-        <div id="gameBoard" class="grid grid-custom-cols gap-1 bg-gray-800 p-2 rounded-lg shadow-lg glow-border-blue" style="--board-size: 5;">
-            </div>
-
-        <div class="mt-8 text-center">
-            <p id="gameStatus" class="text-2xl font-cyber mb-4 text-green-400 glow-text-green">Pilih mode permainan</p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <button id="onePlayerBtn" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-6 rounded glow-button font-cyber text-lg">
-                    1 Pemain (vs AI)
-                </button>
-                <button id="twoPlayerBtn" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-6 rounded glow-button font-cyber text-lg">
-                    2 Pemain (Lokal)
-                </button>
-                <button id="resetBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded glow-button font-cyber text-lg hidden">
-                    Reset Game
-                </button>
-            </div>
+        <div id="gameStatus" class="text-xl md:text-2xl font-cyber text-blue-400 glow-text-blue mb-3 text-center min-h-[2.5rem]">
+            Giliran: X
         </div>
 
-        <div id="rewardPopup" class="reward-popup hidden">
-            <div class="reward-popup-content flex flex-col items-center">
-                <h2 class="text-3xl font-cyber text-blue-400 glow-text-blue mb-4">SELAMAT!</h2>
-                <p class="text-xl font-cyber text-gray-300 mb-6">Anda mendapatkan <span id="rewardCoinsAmount" class="text-green-400 glow-text-green font-bold">100</span> Koin!</p>
-                <button id="watchAdBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded glow-button font-cyber text-lg">
-                    Tonton Iklan (Dapatkan Koin!)
-                </button>
-                <button id="skipRewardBtn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-3 font-cyber text-sm">
-                    Lewati (Tidak Dapat Koin)
-                </button>
+        <div id="gameBoard" class="grid gap-1 md:gap-2 bg-gray-800 p-2 md:p-3 rounded-md border border-gray-700 glow-border-green">
             </div>
+
+        <button id="resetButton" class="mt-5 px-6 py-2 bg-violet-600 text-white font-cyber text-base rounded-full hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-300 glow-button">
+            Mulai Ulang
+        </button>
+        
+        <div class="mt-4 flex justify-center" style="width: 320px; height: 50px; overflow: hidden;">
+            <ins style="width: 320px;height:50px" data-width="320" data-height="50" class="ib0a0917354" data-domain="//data963.click" data-affquery="/f64c05d7073ed0fa5d77/b0a0917354/?placementName=bannerad"><script src="//data963.click/js/responsive.js" async></script></ins>
         </div>
+    </div>
 
-        <div id="shopModal" class="shop-modal hidden">
-            <div class="shop-modal-content">
-                <h2 class="text-3xl font-cyber text-purple-400 glow-text-blue mb-4">Toko Skin XOX Siber</h2>
-                <div id="shopCoinDisplay" class="current-coins">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6 text-yellow-400">
-                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z" clip-rule="evenodd" />
-                    </svg>
-                    <span id="shopPlayerCoins">0</span> Koin Anda
-                </div>
-
-                <div class="shop-items-grid" id="shopItemsGrid">
-                    </div>
-
-                <button id="closeShopBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded glow-button font-cyber mt-4">
-                    Tutup Toko
-                </button>
-            </div>
+    <div id="rewardPopup" class="reward-popup hidden">
+        <div class="reward-popup-content">
+            <h2 class="text-2xl font-cyber text-green-400 mb-4">Selamat! Anda Menang!</h2>
+            <p class="text-lg text-gray-300 mb-6">Tonton iklan untuk mendapatkan <span class="font-bold text-yellow-400">100 Koin!</span></p>
+            <button id="watchAdButton" class="px-6 py-3 bg-blue-600 text-white font-cyber text-lg rounded-full hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 glow-button">
+                Tonton Iklan
+            </button>
+            <p class="text-xs text-gray-500 mt-3">Iklan akan terbuka di tab baru. Kembali ke game ini setelah iklan muncul untuk klaim hadiahmu.</p>
         </div>
-
     </div>
 
     <script>
-        // --- Monetag Integration (KEEP AS IS) ---
-        // Your Monetag scripts are already placed correctly at the beginning of the body.
-        // Example: <script async="async" data-cfasync="false" src="//your.monetag.vignette.script.js"></script>
-        // <script async="async" data-cfasync="false" src="//your.monetag.popunder.script.js"></script>
-        // Ensure you replace "//your.monetag.vignette.script.js" and "//your.monetag.popunder.script.js"
-        // with the actual script URLs provided by your Monetag account.
-        // For the "Watch Ad" button, you will need to use Monetag's Direct Link.
-        // The placeholder `YOUR_MONETAG_DIRECT_LINK_URL_HERE` below should be replaced.
-        const MONETAG_DIRECT_LINK = 'YOUR_MONETAG_DIRECT_LINK_URL_HERE'; // GANTI DENGAN DIRECT LINK MONETAG ANDA!
-
-        // --- Game Core Logic ---
+        // Mendapatkan elemen DOM yang diperlukan
         const gameBoard = document.getElementById('gameBoard');
         const gameStatus = document.getElementById('gameStatus');
-        const onePlayerBtn = document.getElementById('onePlayerBtn');
-        const twoPlayerBtn = document.getElementById('twoPlayerBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const playerXScoreSpan = document.getElementById('playerXScore');
-        const playerOScoreSpan = document.getElementById('playerOScore');
-        const rewardPopup = document.getElementById('rewardPopup');
-        const watchAdBtn = document.getElementById('watchAdBtn');
-        const skipRewardBtn = document.getElementById('skipRewardBtn');
-        const rewardCoinsAmountSpan = document.getElementById('rewardCoinsAmount');
+        const resetButton = document.getElementById('resetButton');
+        const modeAiButton = document.getElementById('modeAiButton');
+        const modeHumanButton = document.getElementById('modeHumanButton');
+        const playerCoinsDisplay = document.getElementById('playerCoinsDisplay'); 
+        const rewardPopup = document.getElementById('rewardPopup'); 
+        const watchAdButton = document.getElementById('watchAdButton'); 
 
-        // --- Shop Elements ---
-        const openShopBtn = document.getElementById('openShopBtn');
-        const shopModal = document.getElementById('shopModal');
-        const closeShopBtn = document.getElementById('closeShopBtn');
-        const shopItemsGrid = document.getElementById('shopItemsGrid');
-        const playerCoinsDisplay = document.getElementById('playerCoins');
-        const shopPlayerCoinsDisplay = document.getElementById('shopPlayerCoins');
+        // --- Konfigurasi Game ---
+        const BOARD_SIZE = 5; 
+        const WIN_LENGTH = 4; 
+        // PENTING: Ganti ini dengan Direct Link Monetag Anda yang sebenarnya!
+        const MONETAG_DIRECT_LINK = 'https://otieu.com/4/9484837'; 
+        const REWARD_COINS_PER_WIN = 100; 
+        // Tambahkan penghitung untuk memicu Vignette Ad setiap beberapa reset
+        let resetCount = 0; 
+        const VIGNETTE_AD_INTERVAL = 3; // Tampilkan Vignette Ad setiap 3 kali reset
 
-        const BOARD_SIZE = 5;
-        const WIN_CONDITION = 4; // 4 in a row for 5x5 board
-        let board = [];
-        let currentPlayer = 'X';
-        let isGameActive = false;
-        let gameMode = null; // '1-player' or '2-player'
-        let playerXScore = 0;
-        let playerOScore = 0;
-        let turnCount = 0; // To track turns for AI difficulty (optional)
-        const REWARD_COINS_PER_WIN = 100; // Koin yang didapat per kemenangan
+        // Variabel state game
+        let board = []; 
+        let currentPlayer = 'X'; 
+        let gameOver = false; 
+        let playerMode = 'ai'; 
+        let playerCoins = 0; 
 
-        // --- Koin dan Skin Logic (BARU) ---
-        let playerCoins = parseInt(localStorage.getItem('xoxSiberCoins') || '0');
-
-        // Definisi Skin
-        // CATATAN: GANTI URL GAMBAR DENGAN URL PUBLIK ASLI ANDA!
-        const skins = [
-            { id: 'defaultX', type: 'X', name: 'X Default', imageUrl: 'https://cs.gstatic.com/gemini/multimodality/tic-tac-toe-x.svg', cost: 0, unlocked: true },
-            { id: 'defaultO', type: 'O', name: 'O Default', imageUrl: 'https://cs.gstatic.com/gemini/multimodality/tic-tac-toe-o.svg', cost: 0, unlocked: true },
-            { id: 'xSwords', type: 'X', name: 'Pedang Siber', imageUrl: 'URL_GAMBAR_X_SWORDS_ANDA_DI_SINI', cost: 500, unlocked: false }, // GANTI URL INI
-            { id: 'oShield', type: 'O', name: 'Perisai Siber', imageUrl: 'URL_GAMBAR_O_SHIELD_ANDA_DI_SINI', cost: 500, unlocked: false }, // GANTI URL INI
-            { id: 'xStaffs', type: 'X', name: 'Tongkat Kristal', imageUrl: 'URL_GAMBAR_X_STAFFS_ANDA_DI_SINI', cost: 1200, unlocked: false }, // GANTI URL INI
-            { id: 'oPotion', type: 'O', name: 'Ramuan Energi', imageUrl: 'URL_GAMBAR_O_POTION_ANDA_DI_SINI', cost: 1200, unlocked: false }, // GANTI URL INI
-            // Contoh Tema Papan (membutuhkan implementasi CSS tambahan)
-            { id: 'boardNeon', type: 'Board', name: 'Papan Neon', cost: 1500, unlocked: false,
-              description: 'Papan dengan garis-garis neon yang menyala. (Membutuhkan pengembangan lebih lanjut untuk CSS)' },
-            // Contoh Efek Visual (membutuhkan implementasi JS/CSS tambahan)
-            { id: 'effectSparkle', type: 'Effect', name: 'Efek Berkilau', cost: 700, unlocked: false,
-              description: 'Efek percikan cahaya saat menempatkan simbol. (Membutuhkan pengembangan lebih lanjut)' },
-            // Contoh Power-up (membutuhkan modifikasi gameplay inti)
-            { id: 'powerUpUndo', type: 'PowerUp', name: 'Undo Terbatas', cost: 300, unlocked: false,
-              description: 'Kemampuan membatalkan satu langkah per game. (Membutuhkan pengembangan lebih lanjut pada logika game)' }
-        ];
-
-        // Load unlocked and selected skins from localStorage
-        let unlockedSkins = JSON.parse(localStorage.getItem('unlockedSkins')) || {};
-        let currentXSkinId = localStorage.getItem('currentXSkinId') || 'defaultX';
-        let currentOSkinId = localStorage.getItem('currentOSkinId') || 'defaultO';
-
-        function loadSkins() {
-            skins.forEach(skin => {
-                if (unlockedSkins[skin.id]) {
-                    skin.unlocked = true;
-                }
-            });
-        }
-
-        function saveSkins() {
-            localStorage.setItem('unlockedSkins', JSON.stringify(unlockedSkins));
-            localStorage.setItem('currentXSkinId', currentXSkinId);
-            localStorage.setItem('currentOSkinId', currentOSkinId);
-        }
-
-        function updateCoinDisplay() {
-            playerCoinsDisplay.textContent = playerCoins;
-            shopPlayerCoinsDisplay.textContent = playerCoins;
-            localStorage.setItem('xoxSiberCoins', playerCoins);
-        }
-
-        function getCurrentSkinUrl(player) {
-            const skinId = player === 'X' ? currentXSkinId : currentOSkinId;
-            const skin = skins.find(s => s.id === skinId);
-            return skin ? skin.imageUrl : ''; // Return empty if not found, should not happen with defaults
-        }
-
-        // --- Game Initialization ---
-        function createBoard() {
+        /**
+         * Menginisialisasi atau mereset game.
+         * Mengosongkan papan, mengatur ulang pemain, dan memperbarui UI.
+         */
+        function initializeGame() {
+            board = Array(BOARD_SIZE * BOARD_SIZE).fill(''); 
+            currentPlayer = 'X';
+            gameOver = false;
             gameBoard.innerHTML = '';
+            gameStatus.classList.remove('glow-text-green', 'glow-text-blue', 'text-violet-400');
+
+            // Sembunyikan pop-up reward saat game direset
+            rewardPopup.classList.add('hidden');
+
+            // Set styles for the game board grid dynamically
             gameBoard.style.setProperty('--board-size', BOARD_SIZE);
-            board = Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill(''));
+            gameBoard.classList.add('grid-custom-cols'); 
 
-            for (let i = 0; i < BOARD_SIZE; i++) {
-                for (let j = 0; j < BOARD_SIZE; j++) {
-                    const cell = document.createElement('div');
-                    cell.classList.add('game-cell', 'flex', 'items-center', 'justify-center', 'text-4xl', 'font-bold', 'cursor-pointer', 'rounded-sm', 'relative');
-                    cell.style.backgroundColor = '#1F2937'; // gray-800 default
-                    cell.style.border = '1px solid #4B5563'; // gray-600
-                    cell.dataset.row = i;
-                    cell.dataset.col = j;
-                    cell.addEventListener('click', handleCellClick);
-                    gameBoard.appendChild(cell);
-                }
-            }
-        }
-
-        function startGame(mode) {
-            gameMode = mode;
-            isGameActive = true;
-            currentPlayer = 'X';
-            gameStatus.textContent = gameMode === '1-player' ? 'Giliran Anda (X)' : 'Giliran Pemain X';
-            resetBtn.classList.remove('hidden');
-            onePlayerBtn.classList.add('hidden');
-            twoPlayerBtn.classList.add('hidden');
-            createBoard();
-        }
-
-        function resetGame() {
-            createBoard();
-            currentPlayer = 'X';
-            isGameActive = true;
-            gameStatus.textContent = gameMode === '1-player' ? 'Giliran Anda (X)' : 'Giliran Pemain X';
-            turnCount = 0;
-        }
-
-        // --- Game Play Logic ---
-        function handleCellClick(event) {
-            if (!isGameActive) return;
-
-            const row = parseInt(event.target.dataset.row);
-            const col = parseInt(event.target.dataset.col);
-
-            if (board[row][col] === '') {
-                makeMove(row, col, currentPlayer);
-            }
-        }
-
-        function makeMove(row, col, player) {
-            board[row][col] = player;
-            drawMark(row, col, player);
-            turnCount++;
-
-            if (checkWin(player)) {
-                endGame(player);
-            } else if (checkDraw()) {
-                endGame('draw');
+            // Set button styles based on current playerMode
+            if (playerMode === 'ai') {
+                modeAiButton.classList.add('bg-blue-600', 'glow-button');
+                modeAiButton.classList.remove('bg-gray-600');
+                modeHumanButton.classList.add('bg-gray-600');
+                modeHumanButton.classList.remove('bg-blue-600', 'glow-button');
             } else {
-                switchPlayer();
-                if (gameMode === '1-player' && currentPlayer === 'O') {
-                    // AI's turn
-                    gameStatus.textContent = 'Giliran AI (O)';
-                    setTimeout(aiMove, 700); // Delay AI move for better UX
-                } else {
-                    gameStatus.textContent = `Giliran Pemain ${currentPlayer}`;
-                }
+                modeHumanButton.classList.add('bg-blue-600', 'glow-button');
+                modeHumanButton.classList.remove('bg-gray-600');
+                modeAiButton.classList.add('bg-gray-600');
+                modeAiButton.classList.remove('bg-blue-600', 'glow-button');
+            }
+
+            // Buat sel papan baru
+            board.forEach((_cell, index) => {
+                const cell = document.createElement('div');
+                cell.classList.add(
+                    'game-cell', 
+                    'bg-gray-850', 'border-2', 'border-gray-700', 'rounded-md',
+                    'flex', 'items-center', 'justify-center', 'text-4xl', 'md:text-5xl',
+                    'font-cyber', 'cursor-pointer', 'select-none',
+                    'transition-all', 'duration-200', 'ease-in-out'
+                );
+                cell.id = `cell-${index}`; 
+                cell.addEventListener('click', () => handleCellClick(index)); 
+                gameBoard.appendChild(cell); 
+            });
+
+            updateStatus(`Giliran: ${currentPlayer}`);
+            loadCoins(); 
+            
+            // --- BARU: LOGIKA IKLAN MONETAG VIGNETTE AD ---
+            resetCount++;
+            if (resetCount % VIGNETTE_AD_INTERVAL === 0) {
+                // Memanggil Monetag Vignette Ad. Pastikan skrip Monetag sudah dimuat di <body>.
+                // Fungsi ini akan secara otomatis dipanggil oleh skrip Monetag.
+                // Jika tidak otomatis, Anda mungkin perlu memanggil fungsi khusus yang disediakan Monetag, contoh:
+                // if (window.propu && window.propu.showVignette) {
+                //     window.propu.showVignette(); 
+                // }
+                console.log("Monetag Vignette Ad Dipicu!"); // Log untuk debugging
             }
         }
 
-        function drawMark(row, col, mark) {
-            const cell = gameBoard.children[row * BOARD_SIZE + col];
-            const img = document.createElement('img');
-            img.src = getCurrentSkinUrl(mark);
-            img.alt = mark;
-            cell.innerHTML = ''; // Clear existing content
-            cell.appendChild(img);
+        /**
+         * Mengambil koin pemain dari localStorage dan memperbarui tampilan.
+         */
+        function loadCoins() {
+            playerCoins = parseInt(localStorage.getItem('xoxSiberCoins') || '0');
+            playerCoinsDisplay.textContent = playerCoins;
         }
 
+        /**
+         * Menambahkan koin kepada pemain dan menyimpannya di localStorage.
+         * @param {number} amount - Jumlah koin yang akan ditambahkan.
+         */
+        function addCoins(amount) {
+            playerCoins += amount;
+            localStorage.setItem('xoxSiberCoins', playerCoins);
+            playerCoinsDisplay.textContent = playerCoins;
+            console.log(`Koin ditambahkan: ${amount}. Total koin: ${playerCoins}`);
+        }
 
-        function checkWin(player) {
-            // Check rows, columns, and diagonals for WIN_CONDITION in a row
-            // Simplified check, needs proper 5x5 + 4-in-a-row logic
-            // This part is complex for a generic solution, you might need a more robust algorithm like:
-            // https://github.com/react-tictactoe/react-tictactoe/blob/master/src/Board.js#L141
-            // For now, a basic check that needs to be expanded for all directions and WIN_CONDITION
+        /**
+         * Menangani klik pada sel papan.
+         * Memperbarui papan, memeriksa kemenangan/seri, dan mengganti pemain.
+         * @param {number} index - Indeks sel yang diklik.
+         */
+        async function handleCellClick(index) {
+            if (board[index] !== '' || gameOver) {
+                return;
+            }
 
-            // Example (this is a very basic placeholder, not a full solution for Connect-N on a large board):
-            // It just checks if the board is filled, which is not winning. A full Connect-N algorithm is needed.
-            const directions = [
-                { dr: 0, dc: 1 }, // Horizontal
-                { dr: 1, dc: 0 }, // Vertical
-                { dr: 1, dc: 1 }, // Diagonal down-right
-                { dr: 1, dc: -1 } // Diagonal down-left
-            ];
+            // Gerakan pemain manusia (X atau O tergantung mode)
+            makeMove(index, currentPlayer);
 
-            for (let r = 0; r < BOARD_SIZE; r++) {
-                for (let c = 0; c < BOARD_SIZE; c++) {
-                    if (board[r][c] === player) {
-                        for (const { dr, dc } of directions) {
-                            let count = 0;
-                            for (let k = 0; k < WIN_CONDITION; k++) {
-                                const newR = r + k * dr;
-                                const newC = c + k * dc;
-                                if (newR >= 0 && newR < BOARD_SIZE && newC >= 0 && newC < BOARD_SIZE && board[newR][newC] === player) {
-                                    count++;
-                                } else {
-                                    break;
-                                }
-                            }
-                            if (count === WIN_CONDITION) {
-                                return true;
-                            }
+            if (checkWin(board, currentPlayer, WIN_LENGTH, BOARD_SIZE)) {
+                updateStatus(`Pemain ${currentPlayer} MENANG!`, true, currentPlayer);
+                gameOver = true;
+                // Tampilkan pop-up reward jika pemain menang melawan AI
+                if (playerMode === 'ai' && currentPlayer === 'X') { // Jika pemain X (manusia) menang melawan AI (O)
+                    showRewardPopup();
+                }
+                return;
+            }
+
+            if (checkDraw(board, WIN_LENGTH, BOARD_SIZE)) {
+                updateStatus('Game SERI!', true);
+                gameOver = true;
+                return;
+            }
+
+            // Ganti pemain
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            updateStatus(`Giliran: ${currentPlayer}`);
+
+            // Jika mode AI dan giliran AI
+            if (playerMode === 'ai' && currentPlayer === 'O' && !gameOver) {
+                updateStatus(`Giliran: ${currentPlayer} (AI Thinking...)`);
+                await new Promise(resolve => setTimeout(resolve, 700)); // Delay untuk efek berpikir AI
+
+                if (!gameOver) {
+                    const bestMove = findBestMoveForAI(board, currentPlayer);
+                    if (bestMove !== -1) { 
+                        makeMove(bestMove, currentPlayer);
+
+                        if (checkWin(board, currentPlayer, WIN_LENGTH, BOARD_SIZE)) {
+                            updateStatus(`Pemain ${currentPlayer} (AI) MENANG!`, true, currentPlayer);
+                            gameOver = true;
+                            return;
+                        }
+
+                        if (checkDraw(board, WIN_LENGTH, BOARD_SIZE)) {
+                            updateStatus('Game SERI!', true);
+                            gameOver = true;
+                            return;
                         }
                     }
-                }
-            }
-            return false;
-        }
 
-        function checkDraw() {
-            // Check if all cells are filled
-            return board.flat().every(cell => cell !== '');
-        }
-
-        function endGame(winner) {
-            isGameActive = false;
-            if (winner === 'draw') {
-                gameStatus.textContent = 'Seri!';
-            } else {
-                gameStatus.textContent = `Pemain ${winner} Menang!`;
-                if (winner === 'X') {
-                    playerXScore++;
-                    playerXScoreSpan.textContent = playerXScore;
-                    showRewardPopup(); // Show reward for winning against AI
-                } else {
-                    playerOScore++;
-                    playerOScoreSpan.textContent = playerOScore;
+                    // Ganti kembali ke pemain manusia (X)
+                    currentPlayer = 'X';
+                    updateStatus(`Giliran: ${currentPlayer}`);
                 }
             }
         }
 
-        function switchPlayer() {
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        }
-
-        // --- AI Logic (Minimax placeholder) ---
-        function aiMove() {
-            // Very simplified AI: finds the first empty spot.
-            // For a real Tic-Tac-Toe AI, you'd use Minimax algorithm here.
-            // The provided original code might have a more advanced AI.
-            // This is a placeholder.
-            let bestMove = null;
-
-            // Simple AI: Find the first empty cell
-            for (let i = 0; i < BOARD_SIZE; i++) {
-                for (let j = 0; j < BOARD_SIZE; j++) {
-                    if (board[i][j] === '') {
-                        bestMove = { row: i, col: j };
-                        break;
-                    }
-                }
-                if (bestMove) break;
-            }
-
-            if (bestMove) {
-                makeMove(bestMove.row, bestMove.col, 'O');
-            }
-        }
-
-        // --- Reward Popup Logic ---
+        /**
+         * Menampilkan pop-up reward setelah pemain menang melawan AI.
+         */
         function showRewardPopup() {
-            rewardCoinsAmountSpan.textContent = REWARD_COINS_PER_WIN;
             rewardPopup.classList.remove('hidden');
         }
 
-        function hideRewardPopup() {
-            rewardPopup.classList.add('hidden');
-        }
+        /**
+         * Menangani klik tombol "Tonton Iklan" di pop-up reward.
+         * Membuka Direct Link Monetag dan memberikan reward setelah delay.
+         */
+        watchAdButton.addEventListener('click', () => {
+            rewardPopup.classList.add('hidden'); // Sembunyikan pop-up
 
-        watchAdBtn.addEventListener('click', () => {
-            // Open Monetag Direct Link
+            // Buka Direct Link Monetag di tab/jendela baru
             window.open(MONETAG_DIRECT_LINK, '_blank');
-            playerCoins += REWARD_COINS_PER_WIN;
-            updateCoinDisplay();
-            hideRewardPopup();
-            resetGame(); // Reset game after reward
+
+            // Berikan hadiah setelah beberapa waktu untuk memastikan iklan dimuat
+            // Pemain harus kembali ke tab game setelah menonton iklan
+            setTimeout(function() {
+                addCoins(REWARD_COINS_PER_WIN);
+                alert(`Selamat! Anda mendapatkan ${REWARD_COINS_PER_WIN} koin!`); // Notifikasi di dalam game
+            }, 15000); // Tunda 15 detik (sesuaikan, bisa 10-30 detik)
         });
 
-        skipRewardBtn.addEventListener('click', () => {
-            hideRewardPopup();
-            resetGame(); // Reset game without reward
-        });
 
-
-        // --- Shop Logic (BARU) ---
-        openShopBtn.addEventListener('click', () => {
-            renderShopItems();
-            shopModal.classList.remove('hidden');
-        });
-
-        closeShopBtn.addEventListener('click', () => {
-            shopModal.classList.add('hidden');
-            // Re-render coin display on main screen in case it changed
-            updateCoinDisplay();
-        });
-
-        function renderShopItems() {
-            shopItemsGrid.innerHTML = '';
-            shopPlayerCoinsDisplay.textContent = playerCoins; // Update coin display in shop
-
-            skins.forEach(skin => {
-                const itemDiv = document.createElement('div');
-                itemDiv.classList.add('shop-item', 'border', 'border-gray-600', 'rounded-lg', 'p-3', 'flex', 'flex-col', 'items-center', 'gap-2', 'cursor-pointer', 'transition-all', 'duration-200');
-                itemDiv.dataset.skinId = skin.id;
-                itemDiv.dataset.skinType = skin.type;
-
-                // Add unlocked class
-                if (skin.unlocked) {
-                    itemDiv.classList.add('unlocked');
-                }
-
-                // Add selected class if applicable
-                if (skin.id === currentXSkinId || skin.id === currentOSkinId) {
-                    itemDiv.classList.add('selected');
-                }
-
-                if (skin.imageUrl) {
-                    const img = document.createElement('img');
-                    img.src = skin.imageUrl;
-                    img.alt = skin.name;
-                    itemDiv.appendChild(img);
-                } else {
-                    // Placeholder for items without images (e.g., themes, effects)
-                    const placeholder = document.createElement('div');
-                    placeholder.classList.add('w-20', 'h-20', 'bg-gray-700', 'flex', 'items-center', 'justify-center', 'rounded');
-                    placeholder.textContent = skin.name[0]; // First letter
-                    placeholder.style.fontSize = '2rem';
-                    itemDiv.appendChild(placeholder);
-                }
-
-                const nameP = document.createElement('p');
-                nameP.classList.add('font-bold', 'text-gray-200');
-                nameP.textContent = skin.name;
-                itemDiv.appendChild(nameP);
-
-                const typeSpan = document.createElement('span');
-                typeSpan.classList.add('text-xs', 'text-gray-400', 'uppercase');
-                typeSpan.textContent = `Tipe: ${skin.type}`;
-                itemDiv.appendChild(typeSpan);
-
-                if (skin.description) {
-                    const descP = document.createElement('p');
-                    descP.classList.add('text-xs', 'text-gray-500', 'mt-1');
-                    descP.textContent = skin.description;
-                    itemDiv.appendChild(descP);
-                }
-
-
-                if (!skin.unlocked) {
-                    const priceDiv = document.createElement('div');
-                    priceDiv.classList.add('shop-item-price');
-                    priceDiv.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z" clip-rule="evenodd" />
-                        </svg>
-                        <span>${skin.cost}</span>
-                    `;
-                    itemDiv.appendChild(priceDiv);
-
-                    const buyBtn = document.createElement('button');
-                    buyBtn.classList.add('buy-button');
-                    buyBtn.textContent = 'Beli';
-                    buyBtn.addEventListener('click', (e) => {
-                        e.stopPropagation(); // Prevent itemDiv click event
-                        buySkin(skin.id);
-                    });
-                    itemDiv.appendChild(buyBtn);
-                } else {
-                    if (skin.type === 'X' || skin.type === 'O') { // Only for X/O skins
-                        const statusP = document.createElement('p');
-                        statusP.classList.add('unlocked-text');
-                        statusP.textContent = 'Dibuka!';
-                        itemDiv.appendChild(statusP);
-
-                        const selectBtn = document.createElement('button');
-                        selectBtn.classList.add('select-button');
-                        selectBtn.textContent = 'Pilih';
-
-                        if ((skin.type === 'X' && skin.id === currentXSkinId) || (skin.type === 'O' && skin.id === currentOSkinId)) {
-                            selectBtn.textContent = 'Terpilih';
-                            selectBtn.disabled = true;
-                            selectBtn.classList.remove('select-button'); // Remove hover effect
-                            selectBtn.classList.add('bg-gray-700', 'text-gray-400', 'cursor-not-allowed');
-                        } else {
-                            selectBtn.addEventListener('click', (e) => {
-                                e.stopPropagation(); // Prevent itemDiv click event
-                                selectSkin(skin.id, skin.type);
-                            });
-                        }
-                        itemDiv.appendChild(selectBtn);
-                    } else { // For other types like Board, Effect, PowerUp
-                         const statusP = document.createElement('p');
-                        statusP.classList.add('unlocked-text');
-                        statusP.textContent = 'Dibuka!';
-                        itemDiv.appendChild(statusP);
-                    }
-                }
-                shopItemsGrid.appendChild(itemDiv);
-            });
-        }
-
-        function buySkin(skinId) {
-            const skin = skins.find(s => s.id === skinId);
-            if (!skin) return;
-
-            if (playerCoins >= skin.cost) {
-                playerCoins -= skin.cost;
-                skin.unlocked = true;
-                unlockedSkins[skin.id] = true; // Mark as unlocked in storage object
-                updateCoinDisplay();
-                saveSkins();
-                renderShopItems(); // Re-render shop to update status
-                alert(`Anda berhasil membeli ${skin.name}!`);
+        /**
+         * Melakukan gerakan di papan dan memperbarui UI.
+         * @param {number} index - Indeks sel untuk membuat gerakan.
+         * @param {string} player - Pemain ('X' atau 'O').
+         */
+        function makeMove(index, player) {
+            board[index] = player;
+            const cellElement = document.getElementById(`cell-${index}`);
+            cellElement.textContent = player;
+            if (player === 'X') {
+                cellElement.classList.add('text-green-400', 'glow-text-green');
             } else {
-                alert(`Koin tidak cukup untuk membeli ${skin.name}. Anda perlu ${skin.cost - playerCoins} koin lagi.`);
+                cellElement.classList.add('text-blue-400', 'glow-text-blue');
             }
         }
 
-        function selectSkin(skinId, type) {
-            const skin = skins.find(s => s.id === skinId);
-            if (!skin || !skin.unlocked) return; // Must be unlocked to select
+        /**
+         * Memeriksa apakah ada pemain yang menang di papan.
+         * @param {Array<string>} currentBoard - Keadaan papan saat ini.
+         * @param {string} player - Pemain yang ingin diperiksa ('X' atau 'O').
+         * @param {number} winLength - Berapa markah berturut-turut untuk menang.
+         * @param {number} boardSize - Ukuran sisi papan (misalnya, 5 untuk 5x5).
+         * @returns {boolean} - True jika ada pemenang, false jika tidak.
+         */
+        function checkWin(currentBoard, player, winLength, boardSize) {
+            // Helper function to get cell value
+            const getCell = (r, c) => {
+                if (r < 0 || r >= boardSize || c < 0 || c >= boardSize) {
+                    return null; // Out of bounds
+                }
+                return currentBoard[r * boardSize + c];
+            };
 
-            if (type === 'X') {
-                currentXSkinId = skinId;
-            } else if (type === 'O') {
-                currentOSkinId = skinId;
+            // Check horizontal
+            for (let r = 0; r < boardSize; r++) {
+                for (let c = 0; c <= boardSize - winLength; c++) {
+                    let count = 0;
+                    for (let i = 0; i < winLength; i++) {
+                        if (getCell(r, c + i) === player) {
+                            count++;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (count === winLength) return true;
+                }
             }
-            saveSkins();
-            renderShopItems(); // Re-render shop to update selected status
-            alert(`${skin.name} berhasil dipilih untuk simbol ${type}!`);
-            // Optionally, update board immediately if game is active
-            if (isGameActive) {
-                // Force redraw all marks with new skins
-                for(let r=0; r<BOARD_SIZE; r++) {
-                    for(let c=0; c<BOARD_SIZE; c++) {
-                        if (board[r][c] !== '') {
-                            drawMark(r, c, board[r][c]);
+
+            // Check vertical
+            for (let c = 0; c < boardSize; c++) {
+                for (let r = 0; r <= boardSize - winLength; r++) {
+                    let count = 0;
+                    for (let i = 0; i < winLength; i++) {
+                        if (getCell(r + i, c) === player) {
+                            count++;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (count === winLength) return true;
+                }
+            }
+
+            // Check diagonal (top-left to bottom-right)
+            for (let r = 0; r <= boardSize - winLength; r++) {
+                for (let c = 0; c <= boardSize - winLength; c++) {
+                    let count = 0;
+                    for (let i = 0; i < winLength; i++) {
+                        if (getCell(r + i, c + i) === player) {
+                            count++;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (count === winLength) return true;
+                }
+            }
+
+            // Check diagonal (top-right to bottom-left)
+            for (let r = 0; r <= boardSize - winLength; r++) {
+                for (let c = winLength - 1; c < boardSize; c++) {
+                    let count = 0;
+                    for (let i = 0; i < winLength; i++) {
+                        if (getCell(r + i, c - i) === player) {
+                            count++;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (count === winLength) return true;
+                }
+            }
+
+            return false;
+        }
+
+        /**
+         * Memeriksa apakah game berakhir seri.
+         * @param {Array<string>} currentBoard - Keadaan papan saat ini.
+         * @param {number} winLength - Berapa markah berturut-turut untuk menang.
+         * @param {number} boardSize - Ukuran sisi papan.
+         * @returns {boolean} - True jika seri, false jika tidak.
+         */
+        function checkDraw(currentBoard, winLength, boardSize) {
+            // Game seri jika tidak ada pemenang dan semua sel terisi
+            const isBoardFull = currentBoard.every(cell => cell !== '');
+            const noWinnerX = !checkWin(currentBoard, 'X', winLength, boardSize);
+            const noWinnerO = !checkWin(currentBoard, 'O', winLength, boardSize);
+            return isBoardFull && noWinnerX && noWinnerO;
+        }
+
+        /**
+         * Memperbarui teks status game dan menambahkan efek visual jika game berakhir.
+         * @param {string} message - Pesan status yang akan ditampilkan.
+         * @param {boolean} [isFinal=false] - True jika ini adalah pesan akhir (menang/seri).
+         * @param {string} [winner=null] - Pemain yang menang (jika ada).
+         */
+        function updateStatus(message, isFinal = false, winner = null) {
+            gameStatus.textContent = message;
+            gameStatus.classList.remove('text-green-400', 'text-blue-400', 'text-violet-400', 'glow-text-green', 'glow-text-blue');
+
+            if (isFinal) {
+                if (winner === 'X') {
+                    gameStatus.classList.add('text-green-400', 'glow-text-green');
+                } else if (winner === 'O') {
+                    gameStatus.classList.add('text-blue-400', 'glow-text-blue');
+                } else { // Seri
+                    gameStatus.classList.add('text-violet-400', 'glow-text-blue');
+                }
+            } else {
+                if (currentPlayer === 'X') {
+                    gameStatus.classList.add('text-green-400');
+                } else { // O or AI
+                    gameStatus.classList.add('text-blue-400');
+                }
+            }
+        }
+
+        // --- AI Heuristik Lanjutan ---
+
+        /**
+         * Menemukan gerakan terbaik untuk AI menggunakan heuristik.
+         * @param {Array<string>} currentBoard - Keadaan papan saat ini.
+         * @param {string} aiPlayer - Markah AI ('O').
+         * @returns {number} - Indeks gerakan terbaik, atau -1 jika tidak ada gerakan.
+         */
+        function findBestMoveForAI(currentBoard, aiPlayer) {
+            const humanPlayer = aiPlayer === 'X' ? 'O' : 'X';
+            const emptyCells = [];
+            for (let i = 0; i < currentBoard.length; i++) {
+                if (currentBoard[i] === '') {
+                    emptyCells.push(i);
+                }
+            }
+
+            if (emptyCells.length === 0) {
+                return -1; // No available moves
+            }
+
+            // 1. Check for immediate winning move for AI
+            for (let i = 0; i < emptyCells.length; i++) {
+                const move = emptyCells[i];
+                currentBoard[move] = aiPlayer;
+                if (checkWin(currentBoard, aiPlayer, WIN_LENGTH, BOARD_SIZE)) {
+                    currentBoard[move] = ''; // Undo move
+                    return move;
+                }
+                currentBoard[move] = ''; // Undo move
+            }
+
+            // 2. Check for immediate blocking move (opponent's winning move)
+            for (let i = 0; i < emptyCells.length; i++) {
+                const move = emptyCells[i];
+                currentBoard[move] = humanPlayer;
+                if (checkWin(currentBoard, humanPlayer, WIN_LENGTH, BOARD_SIZE)) {
+                    currentBoard[move] = ''; // Undo move
+                    return move;
+                }
+                currentBoard[move] = ''; // Undo move
+            }
+
+            // 3. Look for moves that create a sequence of WIN_LENGTH - 1 (e.g., 3 in a row for winLength 4)
+            // This is a basic form of creating threats.
+            let bestThreatMove = -1;
+            let maxThreats = 0;
+
+            for (let i = 0; i < emptyCells.length; i++) {
+                const move = emptyCells[i];
+                currentBoard[move] = aiPlayer;
+                const threats = countThreats(currentBoard, aiPlayer, WIN_LENGTH - 1, BOARD_SIZE);
+                currentBoard[move] = '';
+
+                if (threats > maxThreats) {
+                    maxThreats = threats;
+                    bestThreatMove = move;
+                }
+            }
+
+            if (bestThreatMove !== -1) {
+                return bestThreatMove;
+            }
+
+            // 4. Prioritize center (for odd board sizes) or near center for even.
+            // This is a simple heuristic for better opening moves.
+            const centerIndex = Math.floor(BOARD_SIZE * BOARD_SIZE / 2);
+            if (emptyCells.includes(centerIndex)) {
+                return centerIndex;
+            }
+            // Add nearby cells for priority if center is taken or not available
+            const preferredMoves = [
+                centerIndex,
+                centerIndex - 1, centerIndex + 1,
+                centerIndex - BOARD_SIZE, centerIndex + BOARD_SIZE,
+                centerIndex - BOARD_SIZE - 1, centerIndex - BOARD_SIZE + 1,
+                centerIndex + BOARD_SIZE - 1, centerIndex + BOARD_SIZE + 1
+            ].filter(idx => emptyCells.includes(idx) && idx >= 0 && idx < BOARD_SIZE * BOARD_SIZE);
+
+            if (preferredMoves.length > 0) {
+                // Return a random one from preferred moves
+                return preferredMoves[Math.floor(Math.random() * preferredMoves.length)];
+            }
+
+
+            // 5. Fallback: Take a random available spot
+            return emptyCells[Math.floor(Math.random() * emptyCells.length)];
+        }
+
+        /**
+         * Menghitung jumlah potensi ancaman (barisan markah pemain dengan satu spasi kosong)
+         * untuk pemain tertentu di papan saat ini.
+         * @param {Array<string>} currentBoard - Keadaan papan saat ini.
+         * @param {string} player - Pemain yang ingin diperiksa.
+         * @param {number} sequenceLength - Panjang barisan yang dicari (misalnya, 3 untuk 3-in-a-row).
+         * @param {number} boardSize - Ukuran sisi papan.
+         * @returns {number} - Jumlah ancaman yang ditemukan.
+         */
+        function countThreats(currentBoard, player, sequenceLength, boardSize) {
+            let threats = 0;
+            const getCell = (r, c) => {
+                if (r < 0 || r >= boardSize || c < 0 || c >= boardSize) {
+                    return null;
+                }
+                return currentBoard[r * boardSize + c];
+            };
+
+            const directions = [
+                [0, 1],   // Horizontal
+                [1, 0],   // Vertical
+                [1, 1],   // Diagonal \
+                [1, -1]   // Diagonal /
+            ];
+
+            for (let r = 0; r < boardSize; r++) {
+                for (let c = 0; c < boardSize; c++) {
+                    if (getCell(r, c) !== player && getCell(r, c) !== '') continue;
+
+                    for (const [dr, dc] of directions) {
+                        let playerCount = 0;
+                        let emptyCount = 0;
+                        let totalCount = 0;
+
+                        for (let i = 0; i < WIN_LENGTH; i++) { // Check within win_length window
+                            const nr = r + i * dr;
+                            const nc = c + i * dc;
+                            const cellValue = getCell(nr, nc);
+
+                            if (cellValue === player) {
+                                playerCount++;
+                                totalCount++;
+                            } else if (cellValue === '') {
+                                emptyCount++;
+                                totalCount++;
+                            } else if (cellValue === (player === 'X' ? 'O' : 'X')) { // Opponent's mark
+                                // This line is blocked by opponent, can't be a threat for 'player'
+                                totalCount = 0; // Reset count for this line
+                                break;
+                            } else { // Out of bounds or invalid cell (should be handled by getCell)
+                                totalCount = 0; // Reset count
+                                break;
+                            }
+                        }
+
+                        // A threat is a line of (sequenceLength) of AI's marks plus one empty spot
+                        // within the WIN_LENGTH window, and no opponent marks
+                        if (totalCount === WIN_LENGTH && playerCount === sequenceLength && emptyCount === WIN_LENGTH - sequenceLength) {
+                            threats++;
                         }
                     }
                 }
             }
+            return threats;
         }
+
 
         // --- Event Listeners ---
-        onePlayerBtn.addEventListener('click', () => startGame('1-player'));
-        twoPlayerBtn.addEventListener('click', () => startGame('2-player'));
-        resetBtn.addEventListener('click', resetGame);
 
-        // Initial setup
-        loadSkins();
-        updateCoinDisplay(); // Initial display of coins
-        createBoard(); // Initial board rendering (empty)
+        resetButton.addEventListener('click', () => {
+            initializeGame();
+            // --- BARU: Pemicu Popunder saat reset tombol ditekan ---
+            // Ini bersifat opsional dan eksperimental, bisa mengganggu pengguna.
+            // Hapus baris di bawah jika tidak diinginkan.
+            // if (window.propu && window.propu.showPopunder) {
+            //     window.propu.showPopunder();
+            // }
+            console.log("Monetag Popunder Ad Dipicu saat Reset!");
+        });
 
+        modeAiButton.addEventListener('click', () => {
+            playerMode = 'ai';
+            initializeGame();
+        });
+
+        modeHumanButton.addEventListener('click', () => {
+            playerMode = 'human';
+            initializeGame();
+        });
+
+        // Inisialisasi game saat halaman dimuat
+        window.onload = initializeGame;
     </script>
 </body>
 </html>
