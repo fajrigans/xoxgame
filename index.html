@@ -1,715 +1,652 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta name="monetag" content="100652b48dc4275be673cdeb43648e64">
-    <meta name="google-site-verification" content="P3YGHZCaE9-ETe_ESuUs491p6Ytg0krlNd_wGW3KECo" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XOX Siber - Game Tic-Tac-Toe Modern</title>
-
-    <meta name="description" content="Mainkan game Tic-Tac-Toe (XOX) modern bergaya siber di papan 5x5 yang lebih besar. Tantang AI canggih dalam mode 1 pemain atau teman Anda dalam mode 2 pemain.">
-    <meta name="keywords" content="tic tac toe, xox, game siber, game modern, game 2 pemain, game gratis, game online, permainan siber, AI game, Minimax, tebak-tebakan, 5x5 tic tac toe, extended tic tac toe">
-    <meta name="author" content="Gemini AI">
-
-    <meta property="og:title" content="XOX Siber - Game Tic-Tac-Toe Modern">
-    <meta property="og:description" content="Mainkan game Tic-Tac-Toe (XOX) modern bergaya siber di papan 5x5 yang lebih besar. Tantang AI canggih dalam mode 1 pemain atau teman Anda dalam mode 2 pemain.">
-    <meta property="og:image" content="https://cs.gstatic.com/gemini/multimodality/tic-tac-toe.jpg">
-    <meta property="og:url" content="URL_GAME_ANDA_DI_SINI">
-    <meta property="og:type" content="website">
-    
-
-    <link rel="icon" href="https://cs.gstatic.com/gemini/multimodality/tic-tac-toe.jpg" type="image/jpeg">
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KF6MR71D9W"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-KF6MR71D9W');
-</script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Game XOX</title>
     <style>
-        /* Konfigurasi kustom Tailwind */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Space+Mono:wght@400;700&display=swap');
+        /* --- Gaya CSS Umum --- */
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0A0A0A; /* Latar belakang gelap pekat */
-            /* Menambahkan pola grid siber menggunakan gradient CSS */
-            background-image:
-                repeating-linear-gradient(0deg, rgba(52, 211, 153, 0.05) 0px, transparent 1px, transparent 20px), /* Garis horizontal (nuansa hijau) */
-                repeating-linear-gradient(90deg, rgba(96, 165, 250, 0.05) 0px, transparent 1px, transparent 20px); /* Garis vertikal (nuansa biru) */
-            background-size: 20px 20px; /* Ukuran kotak grid */
-            background-position: center center;
-            background-attachment: fixed;
-            position: relative;
-            z-index: 0; /* Memastikan body adalah lapisan paling bawah */
-        }
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Overlay gelap untuk menjaga kontras dan kedalaman */
-            z-index: -1; /* Pastikan di belakang konten */
-        }
-        .font-cyber {
-            font-family: 'Space Mono', monospace;
-        }
-        /* Efek glow untuk teks dan elemen aktif */
-        .glow-text-green {
-            text-shadow: 0 0 5px #34D399, 0 0 10px #34D399, 0 0 15px #34D399; /* green-400 */
-        }
-        .glow-text-blue {
-            text-shadow: 0 0 5px #60A5FA, 0 0 10px #60A5FA, 0 0 15px #60A5FA; /* blue-400 */
-        }
-        .glow-border-green {
-            box-shadow: 0 0 8px #34D399; /* green-400 */
-        }
-        .glow-border-blue {
-            box-shadow: 0 0 8px #60A5FA; /* blue-400 */
-        }
-        .glow-button {
-            box-shadow: 0 0 8px #A78BFA, 0 0 15px #A78BFA; /* violet-400 */
-            transition: all 0.3s ease-in-out;
-        }
-        .glow-button:hover {
-            box-shadow: 0 0 15px #A78BFA, 0 0 25px #A78BFA, 0 0 35px #A78BFA;
-            transform: translateY(-2px);
-        }
-        /* Menyembunyikan scrollbar untuk tampilan yang lebih bersih */
-        ::-webkit-scrollbar {
-            display: none;
-        }
-        html, body {
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 2rem 1rem;
-        }
-
-        /* Adjust cell size for larger board */
-        .game-cell {
-            width: 12vw; /* Use viewport width for responsiveness */
-            height: 12vw;
-            max-width: 60px; /* Max size for larger screens */
-            max-height: 60px;
-        }
-        @media (min-width: 768px) {
-            .game-cell {
-                width: 70px;
-                height: 70px;
-            }
-        }
-        @media (max-width: 480px) {
-            .game-cell {
-                width: 17vw;
-                height: 17vw;
-                font-size: 1.8rem; /* Smaller text for smaller cells */
-            }
-        }
-
-        /* Adjust grid layout for dynamic board size */
-        .grid-custom-cols {
-            grid-template-columns: repeat(var(--board-size), minmax(0, 1fr));
-        }
-
-        /* BARU: Style untuk pop-up reward */
-        .reward-popup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
         }
-        .reward-popup-content {
-            background-color: #1A1A1A;
-            border: 2px solid #60A5FA;
-            border-radius: 10px;
-            padding: 2rem;
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            box-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
-            max-width: 90%;
-            width: 400px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #coin-display {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            margin: 20px auto;
+            width: 315px; /* 3*100px + 2*5px */
+            height: 315px; /* 3*100px + 2*5px */
+            background-color: #eee; /* Default board background */
+            transition: background-color 0.3s ease; /* Transisi halus untuk skin papan */
+        }
+
+        /* Gaya sel default */
+        .cell {
+            width: 100px;
+            height: 100px;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .cell:hover {
+            background-color: #ccc;
+        }
+
+        /* Gaya default untuk X dan O (teks) */
+        .cell.x {
+            color: #ff4136; /* Merah */
+        }
+
+        .cell.o {
+            color: #0074d9; /* Biru */
+        }
+
+        /* --- Gaya untuk skin X dan O (gambar) --- */
+        /* Pastikan untuk mengunggah gambar Anda dan menyesuaikan url() */
+        /* Contoh: images/skin1_x.png, images/skin1_o.png */
+
+        /* Base style for image skins */
+        .cell.skin-applied {
+            font-size: 0; /* Sembunyikan teks default 'X' atau 'O' */
+            background-size: 80%; /* Sesuaikan sesuai kebutuhan */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #ddd; /* Tetap pertahankan latar belakang sel */
+        }
+
+        /* X Skins (Contoh: tambahkan lebih banyak sesuai gambar Anda) */
+        .cell.x.skin1-x {
+            background-image: url('images/skin1_x.png'); /* Ganti dengan path gambar X pertama Anda */
+        }
+        .cell.x.skin2-x {
+            background-image: url('images/skin2_x.png'); /* Ganti dengan path gambar X kedua Anda */
+        }
+        /* Tambahkan lebih banyak aturan CSS untuk skin X di sini jika Anda punya lebih banyak gambar */
+
+        /* O Skins (Contoh: tambahkan lebih banyak sesuai gambar Anda) */
+        .cell.o.skin1-o {
+            background-image: url('images/skin1_o.png'); /* Ganti dengan path gambar O pertama Anda */
+        }
+        .cell.o.skin2-o {
+            background-image: url('images/skin2_o.png'); /* Ganti dengan path gambar O kedua Anda */
+        }
+        /* Tambahkan lebih banyak aturan CSS untuk skin O di sini jika Anda punya lebih banyak gambar */
+
+
+        #message {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px 5px;
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Gaya untuk berbagai skin papan */
+        #board.default-board-skin {
+            background-color: #eee;
+        }
+        #board.blue-board-skin {
+            background-color: #a7d9ff; /* Biru muda */
+        }
+        #board.green-board-skin {
+            background-color: #b3ffb3; /* Hijau muda */
+        }
+        #board.purple-board-skin {
+            background-color: #d1b3ff; /* Ungu muda */
+        }
+
+
+        /* --- Gaya Modal Toko --- */
+        .modal {
+            display: none; /* Tersembunyi secara default */
+            position: fixed; /* Tetap di tempat */
+            z-index: 1; /* Di atas segalanya */
+            left: 0;
+            top: 0;
+            width: 100%; /* Lebar penuh */
+            height: 100%; /* Tinggi penuh */
+            overflow: auto; /* Aktifkan scroll jika perlu */
+            background-color: rgba(0,0,0,0.4); /* Hitam dengan opasitas */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%; /* Lebih lebar untuk banyak item */
+            max-width: 700px; /* Lebar maksimal untuk layar besar */
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            animation-name: animatetop;
+            animation-duration: 0.4s;
+            max-height: 90vh; /* Agar bisa discroll jika banyak konten */
+            overflow-y: auto;
+        }
+
+        /* Animasi masuk */
+        @keyframes animatetop {
+            from {top: -300px; opacity: 0}
+            to {top: 0; opacity: 1}
+        }
+
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #shopModal h2, #shopModal h3 {
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .skins-category {
+            margin-bottom: 30px;
+        }
+
+        .skins-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .skin-item {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            background-color: #f9f9f9;
+            width: 150px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .skin-item.selected {
+            border: 2px solid #007bff; /* Sorot skin yang dipilih */
+        }
+
+        .skin-preview {
+            width: 100px;
+            height: 50px;
+            margin: 0 auto 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em; /* Untuk pratinjau teks X/O */
+            font-weight: bold;
+            overflow: hidden; /* Mencegah gambar meluap */
+        }
+
+        /* Pratinjau skin papan */
+        .default-board-skin-preview { background-color: #eee; }
+        .blue-board-skin-preview { background-color: #a7d9ff; }
+        .green-board-skin-preview { background-color: #b3ffb3; }
+        .purple-board-skin-preview { background-color: #d1b3ff; }
+
+        /* Pratinjau skin X (pastikan nama kelas cocok dengan data-skin-id) */
+        .default-x-preview { color: #ff4136; } /* Untuk teks default X */
+        .skin1-x-preview { background-image: url('images/skin1_x.png'); background-size: 80%; background-position: center; background-repeat: no-repeat; }
+        .skin2-x-preview { background-image: url('images/skin2_x.png'); background-size: 80%; background-position: center; background-repeat: no-repeat; }
+        /* Tambahkan pratinjau skin X lainnya */
+
+        /* Pratinjau skin O (pastikan nama kelas cocok dengan data-skin-id) */
+        .default-o-preview { color: #0074d9; } /* Untuk teks default O */
+        .skin1-o-preview { background-image: url('images/skin1_o.png'); background-size: 80%; background-position: center; background-repeat: no-repeat; }
+        .skin2-o-preview { background-image: url('images/skin2_o.png'); background-size: 80%; background-position: center; background-repeat: no-repeat; }
+        /* Tambahkan pratinjau skin O lainnya */
+
+        .skin-item button {
+            margin-top: 10px;
+            width: 90%;
         }
     </style>
 </head>
-<body class="bg-gray-950 text-gray-200">
-
-    <script async="async" data-cfasync="false" src="//your.monetag.vignette.script.js"></script> 
-    <script async="async" data-cfasync="false" src="//your.monetag.popunder.script.js"></script>
-
-    <div class="bg-gray-900 border border-gray-700 rounded-lg shadow-xl p-5 md:p-6 space-y-4 max-w-md w-full flex flex-col items-center glow-border-blue">
-        <h1 class="text-3xl md:text-4xl font-cyber text-green-400 glow-text-green mb-3 text-center">XOX Siber</h1>
-
-        <div class="text-xl md:text-2xl font-cyber text-yellow-400 glow-text-blue text-center">
-            Koin Anda: <span id="playerCoinsDisplay">0</span>
+<body>
+    <div class="container">
+        <h1>Game XOX</h1>
+        <div id="coin-display">Koin: <span id="coins">0</span></div>
+        <div id="board">
+            <div class="cell" onclick="makeMove(0)"></div>
+            <div class="cell" onclick="makeMove(1)"></div>
+            <div class="cell" onclick="makeMove(2)"></div>
+            <div class="cell" onclick="makeMove(3)"></div>
+            <div class="cell" onclick="makeMove(4)"></div>
+            <div class="cell" onclick="makeMove(5)"></div>
+            <div class="cell" onclick="makeMove(6)"></div>
+            <div class="cell" onclick="makeMove(7)"></div>
+            <div class="cell" onclick="makeMove(8)"></div>
         </div>
-
-        <div class="flex space-x-4 mb-4">
-            <button id="modeAiButton" class="px-4 py-2 bg-blue-600 text-white font-cyber text-sm rounded-full hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 glow-button">
-                Pemain vs. AI
-            </button>
-            <button id="modeHumanButton" class="px-4 py-2 bg-gray-600 text-white font-cyber text-sm rounded-full hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300">
-                Pemain vs. Pemain
-            </button>
-        </div>
-
-        <div id="gameStatus" class="text-xl md:text-2xl font-cyber text-blue-400 glow-text-blue mb-3 text-center min-h-[2.5rem]">
-            Giliran: X
-        </div>
-
-        <div id="gameBoard" class="grid gap-1 md:gap-2 bg-gray-800 p-2 md:p-3 rounded-md border border-gray-700 glow-border-green">
-            </div>
-
-        <button id="resetButton" class="mt-5 px-6 py-2 bg-violet-600 text-white font-cyber text-base rounded-full hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-300 glow-button">
-            Mulai Ulang
-        </button>
-        
-        <div class="mt-4 flex justify-center" style="width: 320px; height: 50px; overflow: hidden;">
-            <ins style="width: 320px;height:50px" data-width="320" data-height="50" class="ib0a0917354" data-domain="//data963.click" data-affquery="/f64c05d7073ed0fa5d77/b0a0917354/?placementName=bannerad"><script src="//data963.click/js/responsive.js" async></script></ins>
-        </div>
+        <h2 id="message">Giliran X</h2>
+        <button onclick="resetBoard()">Ulangi</button>
+        <button onclick="openShop()">Toko</button>
     </div>
 
-    <div id="rewardPopup" class="reward-popup hidden">
-        <div class="reward-popup-content">
-            <h2 class="text-2xl font-cyber text-green-400 mb-4">Selamat! Anda Menang!</h2>
-            <p class="text-lg text-gray-300 mb-6">Tonton iklan untuk mendapatkan <span class="font-bold text-yellow-400">100 Koin!</span></p>
-            <button id="watchAdButton" class="px-6 py-3 bg-blue-600 text-white font-cyber text-lg rounded-full hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 glow-button">
-                Tonton Iklan
-            </button>
-            <p class="text-xs text-gray-500 mt-3">Iklan akan terbuka di tab baru. Kembali ke game ini setelah iklan muncul untuk klaim hadiahmu.</p>
+    <div id="shopModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeShop()">&times;</span>
+            <h2>Toko Game</h2>
+            <p>Koin Anda: <span id="shop-coins">0</span></p>
+
+            <div class="skins-category">
+                <h3>Skin Latar Belakang Papan (Harga: 50 Koin)</h3>
+                <div class="skins-grid" id="board-skins-container">
+                    <div class="skin-item" data-skin-type="board" data-skin-id="default-board-skin" data-cost="0">
+                        <div class="skin-preview default-board-skin-preview"></div>
+                        <span>Papan Default</span>
+                        <button onclick="buyAndApplySkin('board', 'default-board-skin', 0)">Terapkan</button>
+                    </div>
+                    <div class="skin-item" data-skin-type="board" data-skin-id="blue-board-skin" data-cost="50">
+                        <div class="skin-preview blue-board-skin-preview"></div>
+                        <span>Papan Biru</span>
+                        <button onclick="buyAndApplySkin('board', 'blue-board-skin', 50)">Beli / Terapkan</button>
+                    </div>
+                    <div class="skin-item" data-skin-type="board" data-skin-id="green-board-skin" data-cost="50">
+                        <div class="skin-preview green-board-skin-preview"></div>
+                        <span>Papan Hijau</span>
+                        <button onclick="buyAndApplySkin('board', 'green-board-skin', 50)">Beli / Terapkan</button>
+                    </div>
+                    <div class="skin-item" data-skin-type="board" data-skin-id="purple-board-skin" data-cost="50">
+                        <div class="skin-preview purple-board-skin-preview"></div>
+                        <span>Papan Ungu</span>
+                        <button onclick="buyAndApplySkin('board', 'purple-board-skin', 50)">Beli / Terapkan</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="skins-category">
+                <h3>Skin Penanda 'X' (Harga: 75 Koin)</h3>
+                <div class="skins-grid" id="x-skins-container">
+                    <div class="skin-item" data-skin-type="x" data-skin-id="default-x-skin" data-cost="0">
+                        <div class="skin-preview default-x-preview">X</div>
+                        <span>Default X</span>
+                        <button onclick="buyAndApplySkin('x', 'default-x-skin', 0)">Terapkan</button>
+                    </div>
+                    <div class="skin-item" data-skin-type="x" data-skin-id="skin1-x" data-cost="75">
+                        <div class="skin-preview skin1-x-preview"></div>
+                        <span>Skin X 1</span>
+                        <button onclick="buyAndApplySkin('x', 'skin1-x', 75)">Beli / Terapkan</button>
+                    </div>
+                    <div class="skin-item" data-skin-type="x" data-skin-id="skin2-x" data-cost="75">
+                        <div class="skin-preview skin2-x-preview"></div>
+                        <span>Skin X 2</span>
+                        <button onclick="buyAndApplySkin('x', 'skin2-x', 75)">Beli / Terapkan</button>
+                    </div>
+                    </div>
+            </div>
+
+            <div class="skins-category">
+                <h3>Skin Penanda 'O' (Harga: 75 Koin)</h3>
+                <div class="skins-grid" id="o-skins-container">
+                    <div class="skin-item" data-skin-type="o" data-skin-id="default-o-skin" data-cost="0">
+                        <div class="skin-preview default-o-preview">O</div>
+                        <span>Default O</span>
+                        <button onclick="buyAndApplySkin('o', 'default-o-skin', 0)">Terapkan</button>
+                    </div>
+                    <div class="skin-item" data-skin-type="o" data-skin-id="skin1-o" data-cost="75">
+                        <div class="skin-preview skin1-o-preview"></div>
+                        <span>Skin O 1</span>
+                        <button onclick="buyAndApplySkin('o', 'skin1-o', 75)">Beli / Terapkan</button>
+                    </div>
+                    <div class="skin-item" data-skin-type="o" data-skin-id="skin2-o" data-cost="75">
+                        <div class="skin-preview skin2-o-preview"></div>
+                        <span>Skin O 2</span>
+                        <button onclick="buyAndApplySkin('o', 'skin2-o', 75)">Beli / Terapkan</button>
+                    </div>
+                    </div>
+            </div>
+
         </div>
     </div>
 
     <script>
-        // Mendapatkan elemen DOM yang diperlukan
-        const gameBoard = document.getElementById('gameBoard');
-        const gameStatus = document.getElementById('gameStatus');
-        const resetButton = document.getElementById('resetButton');
-        const modeAiButton = document.getElementById('modeAiButton');
-        const modeHumanButton = document.getElementById('modeHumanButton');
-        const playerCoinsDisplay = document.getElementById('playerCoinsDisplay'); 
-        const rewardPopup = document.getElementById('rewardPopup'); 
-        const watchAdButton = document.getElementById('watchAdButton'); 
+        /* --- Logika JavaScript Anda --- */
+        const cells = document.querySelectorAll('.cell');
+        const message = document.getElementById('message');
+        const board = document.getElementById('board');
+        let currentPlayer = 'X';
+        let gameBoard = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
 
-        // --- Konfigurasi Game ---
-        const BOARD_SIZE = 5; 
-        const WIN_LENGTH = 4; 
-        // PENTING: Ganti ini dengan Direct Link Monetag Anda yang sebenarnya!
-        const MONETAG_DIRECT_LINK = 'https://otieu.com/4/9484837'; 
-        const REWARD_COINS_PER_WIN = 100; 
-        // Tambahkan penghitung untuk memicu Vignette Ad setiap beberapa reset
-        let resetCount = 0; 
-        const VIGNETTE_AD_INTERVAL = 3; // Tampilkan Vignette Ad setiap 3 kali reset
+        // Sistem Koin
+        let coins = parseInt(localStorage.getItem('xoxCoins')) || 0;
 
-        // Variabel state game
-        let board = []; 
-        let currentPlayer = 'X'; 
-        let gameOver = false; 
-        let playerMode = 'ai'; 
-        let playerCoins = 0; 
+        // Skins
+        let ownedBoardSkins = JSON.parse(localStorage.getItem('xoxOwnedBoardSkins')) || ['default-board-skin'];
+        let activeBoardSkin = localStorage.getItem('xoxActiveBoardSkin') || 'default-board-skin';
 
-        /**
-         * Menginisialisasi atau mereset game.
-         * Mengosongkan papan, mengatur ulang pemain, dan memperbarui UI.
-         */
-        function initializeGame() {
-            board = Array(BOARD_SIZE * BOARD_SIZE).fill(''); 
-            currentPlayer = 'X';
-            gameOver = false;
-            gameBoard.innerHTML = '';
-            gameStatus.classList.remove('glow-text-green', 'glow-text-blue', 'text-violet-400');
+        let ownedXSkins = JSON.parse(localStorage.getItem('xoxOwnedXSkins')) || ['default-x-skin'];
+        let activeXSkin = localStorage.getItem('xoxActiveXSkin') || 'default-x-skin';
 
-            // Sembunyikan pop-up reward saat game direset
-            rewardPopup.classList.add('hidden');
+        let ownedOSkins = JSON.parse(localStorage.getItem('xoxOwnedOSkins')) || ['default-o-skin'];
+        let activeOSkin = localStorage.getItem('xoxActiveOSkin') || 'default-o-skin';
 
-            // Set styles for the game board grid dynamically
-            gameBoard.style.setProperty('--board-size', BOARD_SIZE);
-            gameBoard.classList.add('grid-custom-cols'); 
 
-            // Set button styles based on current playerMode
-            if (playerMode === 'ai') {
-                modeAiButton.classList.add('bg-blue-600', 'glow-button');
-                modeAiButton.classList.remove('bg-gray-600');
-                modeHumanButton.classList.add('bg-gray-600');
-                modeHumanButton.classList.remove('bg-blue-600', 'glow-button');
-            } else {
-                modeHumanButton.classList.add('bg-blue-600', 'glow-button');
-                modeHumanButton.classList.remove('bg-gray-600');
-                modeAiButton.classList.add('bg-gray-600');
-                modeAiButton.classList.remove('bg-blue-600', 'glow-button');
+        // Perbarui tampilan koin
+        function updateCoinDisplay() {
+            document.getElementById('coins').textContent = coins;
+            if (document.getElementById('shop-coins')) { // Perbarui tampilan toko jika terlihat
+                document.getElementById('shop-coins').textContent = coins;
             }
+        }
 
-            // Buat sel papan baru
-            board.forEach((_cell, index) => {
-                const cell = document.createElement('div');
-                cell.classList.add(
-                    'game-cell', 
-                    'bg-gray-850', 'border-2', 'border-gray-700', 'rounded-md',
-                    'flex', 'items-center', 'justify-center', 'text-4xl', 'md:text-5xl',
-                    'font-cyber', 'cursor-pointer', 'select-none',
-                    'transition-all', 'duration-200', 'ease-in-out'
-                );
-                cell.id = `cell-${index}`; 
-                cell.addEventListener('click', () => handleCellClick(index)); 
-                gameBoard.appendChild(cell); 
+        // Simpan status game
+        function saveGameState() {
+            localStorage.setItem('xoxCoins', coins);
+            localStorage.setItem('xoxOwnedBoardSkins', JSON.stringify(ownedBoardSkins));
+            localStorage.setItem('xoxActiveBoardSkin', activeBoardSkin);
+            localStorage.setItem('xoxOwnedXSkins', JSON.stringify(ownedXSkins));
+            localStorage.setItem('xoxActiveXSkin', activeXSkin);
+            localStorage.setItem('xoxOwnedOSkins', JSON.stringify(ownedOSkins));
+            localStorage.setItem('xoxActiveOSkin', activeOSkin);
+        }
+
+        // Inisialisasi game saat memuat
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCoinDisplay();
+            applyBoardSkin(activeBoardSkin); // Terapkan skin papan terakhir yang aktif
+            updateShopButtons(); // Perbarui tombol toko
+        });
+
+        // Logika Game
+        function makeMove(index) {
+            if (!gameActive || gameBoard[index] !== '') return;
+
+            gameBoard[index] = currentPlayer;
+            const cell = cells[index];
+
+            // Hapus semua kelas skin X/O sebelumnya dan tambahkan kelas pemain
+            // Ini penting agar skin yang berbeda tidak bertumpuk
+            cell.classList.remove('x', 'o', 'skin-applied');
+            cell.classList.forEach(cls => {
+                if (cls.startsWith('skin') && (cls.endsWith('-x') || cls.endsWith('-o'))) {
+                    cell.classList.remove(cls);
+                }
             });
 
-            updateStatus(`Giliran: ${currentPlayer}`);
-            loadCoins(); 
-            
-            // --- BARU: LOGIKA IKLAN MONETAG VIGNETTE AD ---
-            resetCount++;
-            if (resetCount % VIGNETTE_AD_INTERVAL === 0) {
-                // Memanggil Monetag Vignette Ad. Pastikan skrip Monetag sudah dimuat di <body>.
-                // Fungsi ini akan secara otomatis dipanggil oleh skrip Monetag.
-                // Jika tidak otomatis, Anda mungkin perlu memanggil fungsi khusus yang disediakan Monetag, contoh:
-                // if (window.propu && window.propu.showVignette) {
-                //     window.propu.showVignette(); 
-                // }
-                console.log("Monetag Vignette Ad Dipicu!"); // Log untuk debugging
-            }
-        }
+            cell.textContent = currentPlayer; // Default text content
 
-        /**
-         * Mengambil koin pemain dari localStorage dan memperbarui tampilan.
-         */
-        function loadCoins() {
-            playerCoins = parseInt(localStorage.getItem('xoxSiberCoins') || '0');
-            playerCoinsDisplay.textContent = playerCoins;
-        }
-
-        /**
-         * Menambahkan koin kepada pemain dan menyimpannya di localStorage.
-         * @param {number} amount - Jumlah koin yang akan ditambahkan.
-         */
-        function addCoins(amount) {
-            playerCoins += amount;
-            localStorage.setItem('xoxSiberCoins', playerCoins);
-            playerCoinsDisplay.textContent = playerCoins;
-            console.log(`Koin ditambahkan: ${amount}. Total koin: ${playerCoins}`);
-        }
-
-        /**
-         * Menangani klik pada sel papan.
-         * Memperbarui papan, memeriksa kemenangan/seri, dan mengganti pemain.
-         * @param {number} index - Indeks sel yang diklik.
-         */
-        async function handleCellClick(index) {
-            if (board[index] !== '' || gameOver) {
-                return;
-            }
-
-            // Gerakan pemain manusia (X atau O tergantung mode)
-            makeMove(index, currentPlayer);
-
-            if (checkWin(board, currentPlayer, WIN_LENGTH, BOARD_SIZE)) {
-                updateStatus(`Pemain ${currentPlayer} MENANG!`, true, currentPlayer);
-                gameOver = true;
-                // Tampilkan pop-up reward jika pemain menang melawan AI
-                if (playerMode === 'ai' && currentPlayer === 'X') { // Jika pemain X (manusia) menang melawan AI (O)
-                    showRewardPopup();
-                }
-                return;
-            }
-
-            if (checkDraw(board, WIN_LENGTH, BOARD_SIZE)) {
-                updateStatus('Game SERI!', true);
-                gameOver = true;
-                return;
-            }
-
-            // Ganti pemain
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-            updateStatus(`Giliran: ${currentPlayer}`);
-
-            // Jika mode AI dan giliran AI
-            if (playerMode === 'ai' && currentPlayer === 'O' && !gameOver) {
-                updateStatus(`Giliran: ${currentPlayer} (AI Thinking...)`);
-                await new Promise(resolve => setTimeout(resolve, 700)); // Delay untuk efek berpikir AI
-
-                if (!gameOver) {
-                    const bestMove = findBestMoveForAI(board, currentPlayer);
-                    if (bestMove !== -1) { 
-                        makeMove(bestMove, currentPlayer);
-
-                        if (checkWin(board, currentPlayer, WIN_LENGTH, BOARD_SIZE)) {
-                            updateStatus(`Pemain ${currentPlayer} (AI) MENANG!`, true, currentPlayer);
-                            gameOver = true;
-                            return;
-                        }
-
-                        if (checkDraw(board, WIN_LENGTH, BOARD_SIZE)) {
-                            updateStatus('Game SERI!', true);
-                            gameOver = true;
-                            return;
-                        }
-                    }
-
-                    // Ganti kembali ke pemain manusia (X)
-                    currentPlayer = 'X';
-                    updateStatus(`Giliran: ${currentPlayer}`);
-                }
-            }
-        }
-
-        /**
-         * Menampilkan pop-up reward setelah pemain menang melawan AI.
-         */
-        function showRewardPopup() {
-            rewardPopup.classList.remove('hidden');
-        }
-
-        /**
-         * Menangani klik tombol "Tonton Iklan" di pop-up reward.
-         * Membuka Direct Link Monetag dan memberikan reward setelah delay.
-         */
-        watchAdButton.addEventListener('click', () => {
-            rewardPopup.classList.add('hidden'); // Sembunyikan pop-up
-
-            // Buka Direct Link Monetag di tab/jendela baru
-            window.open(MONETAG_DIRECT_LINK, '_blank');
-
-            // Berikan hadiah setelah beberapa waktu untuk memastikan iklan dimuat
-            // Pemain harus kembali ke tab game setelah menonton iklan
-            setTimeout(function() {
-                addCoins(REWARD_COINS_PER_WIN);
-                alert(`Selamat! Anda mendapatkan ${REWARD_COINS_PER_WIN} koin!`); // Notifikasi di dalam game
-            }, 15000); // Tunda 15 detik (sesuaikan, bisa 10-30 detik)
-        });
-
-
-        /**
-         * Melakukan gerakan di papan dan memperbarui UI.
-         * @param {number} index - Indeks sel untuk membuat gerakan.
-         * @param {string} player - Pemain ('X' atau 'O').
-         */
-        function makeMove(index, player) {
-            board[index] = player;
-            const cellElement = document.getElementById(`cell-${index}`);
-            cellElement.textContent = player;
-            if (player === 'X') {
-                cellElement.classList.add('text-green-400', 'glow-text-green');
-            } else {
-                cellElement.classList.add('text-blue-400', 'glow-text-blue');
-            }
-        }
-
-        /**
-         * Memeriksa apakah ada pemain yang menang di papan.
-         * @param {Array<string>} currentBoard - Keadaan papan saat ini.
-         * @param {string} player - Pemain yang ingin diperiksa ('X' atau 'O').
-         * @param {number} winLength - Berapa markah berturut-turut untuk menang.
-         * @param {number} boardSize - Ukuran sisi papan (misalnya, 5 untuk 5x5).
-         * @returns {boolean} - True jika ada pemenang, false jika tidak.
-         */
-        function checkWin(currentBoard, player, winLength, boardSize) {
-            // Helper function to get cell value
-            const getCell = (r, c) => {
-                if (r < 0 || r >= boardSize || c < 0 || c >= boardSize) {
-                    return null; // Out of bounds
-                }
-                return currentBoard[r * boardSize + c];
-            };
-
-            // Check horizontal
-            for (let r = 0; r < boardSize; r++) {
-                for (let c = 0; c <= boardSize - winLength; c++) {
-                    let count = 0;
-                    for (let i = 0; i < winLength; i++) {
-                        if (getCell(r, c + i) === player) {
-                            count++;
-                        } else {
-                            break;
-                        }
-                    }
-                    if (count === winLength) return true;
-                }
-            }
-
-            // Check vertical
-            for (let c = 0; c < boardSize; c++) {
-                for (let r = 0; r <= boardSize - winLength; r++) {
-                    let count = 0;
-                    for (let i = 0; i < winLength; i++) {
-                        if (getCell(r + i, c) === player) {
-                            count++;
-                        } else {
-                            break;
-                        }
-                    }
-                    if (count === winLength) return true;
-                }
-            }
-
-            // Check diagonal (top-left to bottom-right)
-            for (let r = 0; r <= boardSize - winLength; r++) {
-                for (let c = 0; c <= boardSize - winLength; c++) {
-                    let count = 0;
-                    for (let i = 0; i < winLength; i++) {
-                        if (getCell(r + i, c + i) === player) {
-                            count++;
-                        } else {
-                            break;
-                        }
-                    }
-                    if (count === winLength) return true;
-                }
-            }
-
-            // Check diagonal (top-right to bottom-left)
-            for (let r = 0; r <= boardSize - winLength; r++) {
-                for (let c = winLength - 1; c < boardSize; c++) {
-                    let count = 0;
-                    for (let i = 0; i < winLength; i++) {
-                        if (getCell(r + i, c - i) === player) {
-                            count++;
-                        } else {
-                            break;
-                        }
-                    }
-                    if (count === winLength) return true;
-                }
-            }
-
-            return false;
-        }
-
-        /**
-         * Memeriksa apakah game berakhir seri.
-         * @param {Array<string>} currentBoard - Keadaan papan saat ini.
-         * @param {number} winLength - Berapa markah berturut-turut untuk menang.
-         * @param {number} boardSize - Ukuran sisi papan.
-         * @returns {boolean} - True jika seri, false jika tidak.
-         */
-        function checkDraw(currentBoard, winLength, boardSize) {
-            // Game seri jika tidak ada pemenang dan semua sel terisi
-            const isBoardFull = currentBoard.every(cell => cell !== '');
-            const noWinnerX = !checkWin(currentBoard, 'X', winLength, boardSize);
-            const noWinnerO = !checkWin(currentBoard, 'O', winLength, boardSize);
-            return isBoardFull && noWinnerX && noWinnerO;
-        }
-
-        /**
-         * Memperbarui teks status game dan menambahkan efek visual jika game berakhir.
-         * @param {string} message - Pesan status yang akan ditampilkan.
-         * @param {boolean} [isFinal=false] - True jika ini adalah pesan akhir (menang/seri).
-         * @param {string} [winner=null] - Pemain yang menang (jika ada).
-         */
-        function updateStatus(message, isFinal = false, winner = null) {
-            gameStatus.textContent = message;
-            gameStatus.classList.remove('text-green-400', 'text-blue-400', 'text-violet-400', 'glow-text-green', 'glow-text-blue');
-
-            if (isFinal) {
-                if (winner === 'X') {
-                    gameStatus.classList.add('text-green-400', 'glow-text-green');
-                } else if (winner === 'O') {
-                    gameStatus.classList.add('text-blue-400', 'glow-text-blue');
-                } else { // Seri
-                    gameStatus.classList.add('text-violet-400', 'glow-text-blue');
+            if (currentPlayer === 'X') {
+                cell.classList.add('x');
+                if (activeXSkin && activeXSkin !== 'default-x-skin') {
+                    cell.classList.add('skin-applied', activeXSkin);
+                    cell.textContent = ''; // Sembunyikan teks jika skin gambar diterapkan
                 }
             } else {
-                if (currentPlayer === 'X') {
-                    gameStatus.classList.add('text-green-400');
-                } else { // O or AI
-                    gameStatus.classList.add('text-blue-400');
+                cell.classList.add('o');
+                if (activeOSkin && activeOSkin !== 'default-o-skin') {
+                    cell.classList.add('skin-applied', activeOSkin);
+                    cell.textContent = ''; // Sembunyikan teks jika skin gambar diterapkan
                 }
+            }
+
+            if (checkWin()) {
+                message.textContent = `${currentPlayer} menang!`;
+                gameActive = false;
+                awardCoins(currentPlayer); // Berikan koin kepada pemenang
+            } else if (checkDraw()) {
+                message.textContent = 'Seri!';
+                gameActive = false;
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                message.textContent = `Giliran ${currentPlayer}`;
             }
         }
 
-        // --- AI Heuristik Lanjutan ---
+        const winPatterns = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Baris
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Kolom
+            [0, 4, 8], [2, 4, 6]             // Diagonal
+        ];
 
-        /**
-         * Menemukan gerakan terbaik untuk AI menggunakan heuristik.
-         * @param {Array<string>} currentBoard - Keadaan papan saat ini.
-         * @param {string} aiPlayer - Markah AI ('O').
-         * @returns {number} - Indeks gerakan terbaik, atau -1 jika tidak ada gerakan.
-         */
-        function findBestMoveForAI(currentBoard, aiPlayer) {
-            const humanPlayer = aiPlayer === 'X' ? 'O' : 'X';
-            const emptyCells = [];
-            for (let i = 0; i < currentBoard.length; i++) {
-                if (currentBoard[i] === '') {
-                    emptyCells.push(i);
-                }
-            }
-
-            if (emptyCells.length === 0) {
-                return -1; // No available moves
-            }
-
-            // 1. Check for immediate winning move for AI
-            for (let i = 0; i < emptyCells.length; i++) {
-                const move = emptyCells[i];
-                currentBoard[move] = aiPlayer;
-                if (checkWin(currentBoard, aiPlayer, WIN_LENGTH, BOARD_SIZE)) {
-                    currentBoard[move] = ''; // Undo move
-                    return move;
-                }
-                currentBoard[move] = ''; // Undo move
-            }
-
-            // 2. Check for immediate blocking move (opponent's winning move)
-            for (let i = 0; i < emptyCells.length; i++) {
-                const move = emptyCells[i];
-                currentBoard[move] = humanPlayer;
-                if (checkWin(currentBoard, humanPlayer, WIN_LENGTH, BOARD_SIZE)) {
-                    currentBoard[move] = ''; // Undo move
-                    return move;
-                }
-                currentBoard[move] = ''; // Undo move
-            }
-
-            // 3. Look for moves that create a sequence of WIN_LENGTH - 1 (e.g., 3 in a row for winLength 4)
-            // This is a basic form of creating threats.
-            let bestThreatMove = -1;
-            let maxThreats = 0;
-
-            for (let i = 0; i < emptyCells.length; i++) {
-                const move = emptyCells[i];
-                currentBoard[move] = aiPlayer;
-                const threats = countThreats(currentBoard, aiPlayer, WIN_LENGTH - 1, BOARD_SIZE);
-                currentBoard[move] = '';
-
-                if (threats > maxThreats) {
-                    maxThreats = threats;
-                    bestThreatMove = move;
-                }
-            }
-
-            if (bestThreatMove !== -1) {
-                return bestThreatMove;
-            }
-
-            // 4. Prioritize center (for odd board sizes) or near center for even.
-            // This is a simple heuristic for better opening moves.
-            const centerIndex = Math.floor(BOARD_SIZE * BOARD_SIZE / 2);
-            if (emptyCells.includes(centerIndex)) {
-                return centerIndex;
-            }
-            // Add nearby cells for priority if center is taken or not available
-            const preferredMoves = [
-                centerIndex,
-                centerIndex - 1, centerIndex + 1,
-                centerIndex - BOARD_SIZE, centerIndex + BOARD_SIZE,
-                centerIndex - BOARD_SIZE - 1, centerIndex - BOARD_SIZE + 1,
-                centerIndex + BOARD_SIZE - 1, centerIndex + BOARD_SIZE + 1
-            ].filter(idx => emptyCells.includes(idx) && idx >= 0 && idx < BOARD_SIZE * BOARD_SIZE);
-
-            if (preferredMoves.length > 0) {
-                // Return a random one from preferred moves
-                return preferredMoves[Math.floor(Math.random() * preferredMoves.length)];
-            }
-
-
-            // 5. Fallback: Take a random available spot
-            return emptyCells[Math.floor(Math.random() * emptyCells.length)];
+        function checkWin() {
+            return winPatterns.some(pattern => {
+                const [a, b, c] = pattern;
+                return gameBoard[a] !== '' && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c];
+            });
         }
 
-        /**
-         * Menghitung jumlah potensi ancaman (barisan markah pemain dengan satu spasi kosong)
-         * untuk pemain tertentu di papan saat ini.
-         * @param {Array<string>} currentBoard - Keadaan papan saat ini.
-         * @param {string} player - Pemain yang ingin diperiksa.
-         * @param {number} sequenceLength - Panjang barisan yang dicari (misalnya, 3 untuk 3-in-a-row).
-         * @param {number} boardSize - Ukuran sisi papan.
-         * @returns {number} - Jumlah ancaman yang ditemukan.
-         */
-        function countThreats(currentBoard, player, sequenceLength, boardSize) {
-            let threats = 0;
-            const getCell = (r, c) => {
-                if (r < 0 || r >= boardSize || c < 0 || c >= boardSize) {
-                    return null;
+        function checkDraw() {
+            return gameBoard.every(cell => cell !== '');
+        }
+
+        function resetBoard() {
+            gameBoard = ['', '', '', '', '', '', '', '', ''];
+            cells.forEach(cell => {
+                cell.textContent = '';
+                // Hapus semua kelas pemain dan skin gambar/kostum
+                cell.classList.remove('x', 'o', 'skin-applied');
+                cell.classList.forEach(cls => {
+                    if (cls.startsWith('skin') && (cls.endsWith('-x') || cls.endsWith('-o'))) {
+                        cell.classList.remove(cls);
+                    }
+                });
+            });
+            currentPlayer = 'X';
+            message.textContent = `Giliran X`;
+            gameActive = true;
+        }
+
+        function awardCoins(winner) {
+            if (winner === 'X' || winner === 'O') { // Hanya berikan jika X atau O menang (bukan seri)
+                coins += 10; // Berikan 10 koin untuk kemenangan
+                updateCoinDisplay();
+                saveGameState();
+            }
+        }
+
+        // --- Fungsionalitas Toko ---
+        const shopModal = document.getElementById('shopModal');
+
+        function openShop() {
+            shopModal.style.display = 'flex'; // Gunakan flex untuk memusatkan
+            updateCoinDisplay(); // Segarkan tampilan koin di toko
+            updateShopButtons(); // Segarkan status tombol
+        }
+
+        function closeShop() {
+            shopModal.style.display = 'none';
+        }
+
+        function updateShopButtons() {
+            const skinItems = document.querySelectorAll('.skin-item');
+            skinItems.forEach(item => {
+                const skinType = item.dataset.skinType;
+                const skinId = item.dataset.skinId;
+                const buyButton = item.querySelector('button');
+                const cost = parseInt(item.dataset.cost);
+
+                item.classList.remove('selected'); // Hapus kelas "selected" yang ada
+
+                let isOwned;
+                let isActive;
+
+                if (skinType === 'board') {
+                    isOwned = ownedBoardSkins.includes(skinId);
+                    isActive = (skinId === activeBoardSkin);
+                } else if (skinType === 'x') {
+                    isOwned = ownedXSkins.includes(skinId);
+                    isActive = (skinId === activeXSkin);
+                } else if (skinType === 'o') {
+                    isOwned = ownedOSkins.includes(skinId);
+                    isActive = (skinId === activeOSkin);
                 }
-                return currentBoard[r * boardSize + c];
-            };
 
-            const directions = [
-                [0, 1],   // Horizontal
-                [1, 0],   // Vertical
-                [1, 1],   // Diagonal \
-                [1, -1]   // Diagonal /
-            ];
+                if (isOwned) {
+                    buyButton.textContent = 'Terapkan';
+                    buyButton.onclick = () => {
+                        if (skinType === 'board') applyBoardSkin(skinId);
+                        else if (skinType === 'x') applyPlayerSkin('x', skinId);
+                        else if (skinType === 'o') applyPlayerSkin('o', skinId);
+                    };
+                    buyButton.disabled = false;
+                    if (isActive) {
+                        item.classList.add('selected'); // Sorot jika itu skin aktif
+                        buyButton.textContent = 'Aktif';
+                        buyButton.disabled = true; // Tidak bisa menerapkan jika sudah aktif
+                    }
+                } else {
+                    // Skin belum dimiliki
+                    buyButton.textContent = `Beli (${cost} Koin)`;
+                    buyButton.onclick = () => buyAndApplySkin(skinType, skinId, cost);
+                    buyButton.disabled = (coins < cost); // Nonaktifkan jika koin tidak cukup
+                }
+            });
+        }
 
-            for (let r = 0; r < boardSize; r++) {
-                for (let c = 0; c < boardSize; c++) {
-                    if (getCell(r, c) !== player && getCell(r, c) !== '') continue;
+        function buyAndApplySkin(skinType, skinId, cost) {
+            if (coins >= cost) {
+                coins -= cost;
+                if (skinType === 'board') {
+                    ownedBoardSkins.push(skinId);
+                    applyBoardSkin(skinId);
+                } else if (skinType === 'x') {
+                    ownedXSkins.push(skinId);
+                    applyPlayerSkin('x', skinId);
+                } else if (skinType === 'o') {
+                    ownedOSkins.push(skinId);
+                    applyPlayerSkin('o', skinId);
+                }
+                updateCoinDisplay();
+                saveGameState();
+                updateShopButtons(); // Perbarui status tombol
+                alert(`Anda membeli dan menerapkan skin baru!`);
+            } else {
+                alert('Koin tidak cukup!');
+            }
+        }
 
-                    for (const [dr, dc] of directions) {
-                        let playerCount = 0;
-                        let emptyCount = 0;
-                        let totalCount = 0;
+        function applyBoardSkin(skinId) {
+            // Hapus semua kelas skin papan yang ada
+            const allBoardSkins = ['default-board-skin', 'blue-board-skin', 'green-board-skin', 'purple-board-skin'];
+            board.classList.remove(...allBoardSkins);
+            // Tambahkan kelas skin papan baru
+            board.classList.add(skinId);
+            activeBoardSkin = skinId;
+            saveGameState(); // Simpan skin aktif
+            updateShopButtons(); // Segarkan tombol untuk menunjukkan yang aktif
+        }
 
-                        for (let i = 0; i < WIN_LENGTH; i++) { // Check within win_length window
-                            const nr = r + i * dr;
-                            const nc = c + i * dc;
-                            const cellValue = getCell(nr, nc);
+        function applyPlayerSkin(playerType, skinId) {
+            if (playerType === 'x') {
+                activeXSkin = skinId;
+            } else if (playerType === 'o') {
+                activeOSkin = skinId;
+            }
+            saveGameState();
+            updateShopButtons(); // Segarkan tombol
 
-                            if (cellValue === player) {
-                                playerCount++;
-                                totalCount++;
-                            } else if (cellValue === '') {
-                                emptyCount++;
-                                totalCount++;
-                            } else if (cellValue === (player === 'X' ? 'O' : 'X')) { // Opponent's mark
-                                // This line is blocked by opponent, can't be a threat for 'player'
-                                totalCount = 0; // Reset count for this line
-                                break;
-                            } else { // Out of bounds or invalid cell (should be handled by getCell)
-                                totalCount = 0; // Reset count
-                                break;
-                            }
+            // Perbarui tampilan semua sel yang sudah ada agar mencerminkan skin baru
+            cells.forEach(cell => {
+                const cellPlayer = cell.textContent === '' ? null : (cell.classList.contains('x') ? 'X' : (cell.classList.contains('o') ? 'O' : null));
+
+                // Hanya perbarui jika sel sudah diisi oleh pemain yang relevan
+                if (cellPlayer === playerType.toUpperCase()) {
+                    // Hapus kelas skin sebelumnya dan tambahkan kelas default/baru
+                    cell.classList.remove('skin-applied');
+                    cell.classList.forEach(cls => {
+                        if (cls.startsWith('skin') && (cls.endsWith('-x') || cls.endsWith('-o'))) {
+                            cell.classList.remove(cls);
                         }
+                    });
 
-                        // A threat is a line of (sequenceLength) of AI's marks plus one empty spot
-                        // within the WIN_LENGTH window, and no opponent marks
-                        if (totalCount === WIN_LENGTH && playerCount === sequenceLength && emptyCount === WIN_LENGTH - sequenceLength) {
-                            threats++;
+                    if (playerType === 'x') {
+                        if (activeXSkin && activeXSkin !== 'default-x-skin') {
+                            cell.classList.add('skin-applied', activeXSkin);
+                            cell.textContent = ''; // Sembunyikan teks
+                        } else {
+                            cell.textContent = 'X'; // Tampilkan teks default
+                        }
+                    } else if (playerType === 'o') {
+                        if (activeOSkin && activeOSkin !== 'default-o-skin') {
+                            cell.classList.add('skin-applied', activeOSkin);
+                            cell.textContent = ''; // Sembunyikan teks
+                        } else {
+                            cell.textContent = 'O'; // Tampilkan teks default
                         }
                     }
                 }
-            }
-            return threats;
+            });
         }
 
-
-        // --- Event Listeners ---
-
-        resetButton.addEventListener('click', () => {
-            initializeGame();
-            // --- BARU: Pemicu Popunder saat reset tombol ditekan ---
-            // Ini bersifat opsional dan eksperimental, bisa mengganggu pengguna.
-            // Hapus baris di bawah jika tidak diinginkan.
-            // if (window.propu && window.propu.showPopunder) {
-            //     window.propu.showPopunder();
-            // }
-            console.log("Monetag Popunder Ad Dipicu saat Reset!");
-        });
-
-        modeAiButton.addEventListener('click', () => {
-            playerMode = 'ai';
-            initializeGame();
-        });
-
-        modeHumanButton.addEventListener('click', () => {
-            playerMode = 'human';
-            initializeGame();
-        });
-
-        // Inisialisasi game saat halaman dimuat
-        window.onload = initializeGame;
+        // Tutup modal saat mengklik di luar area modal
+        window.onclick = function(event) {
+            if (event.target == shopModal) {
+                closeShop();
+            }
+        }
     </script>
 </body>
 </html>
