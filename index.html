@@ -7,12 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XOX Siber - Game Tic-Tac-Toe Modern</title>
 
-    <!-- Meta Tags untuk SEO dan Kemudahan Pencarian -->
     <meta name="description" content="Mainkan game Tic-Tac-Toe (XOX) modern bergaya siber di papan 5x5 yang lebih besar. Tantang AI canggih dalam mode 1 pemain atau teman Anda dalam mode 2 pemain.">
     <meta name="keywords" content="tic tac toe, xox, game siber, game modern, game 2 pemain, game gratis, game online, permainan siber, AI game, Minimax, tebak-tebakan, 5x5 tic tac toe, extended tic tac toe">
     <meta name="author" content="Gemini AI">
 
-    <!-- Open Graph Tags untuk Berbagi di Media Sosial -->
     <meta property="og:title" content="XOX Siber - Game Tic-Tac-Toe Modern">
     <meta property="og:description" content="Mainkan game Tic-Tac-Toe (XOX) modern bergaya siber di papan 5x5 yang lebih besar. Tantang AI canggih dalam mode 1 pemain atau teman Anda dalam mode 2 pemain.">
     <meta property="og:image" content="https://cs.gstatic.com/gemini/multimodality/tic-tac-toe.jpg">
@@ -20,11 +18,9 @@
     <meta property="og:type" content="website">
     
 
-    <!-- Favicon -->
     <link rel="icon" href="https://cs.gstatic.com/gemini/multimodality/tic-tac-toe.jpg" type="image/jpeg">
 
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-KF6MR71D9W"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KF6MR71D9W"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -32,7 +28,6 @@
 
   gtag('config', 'G-KF6MR71D9W');
 </script>
-    <!-- Memuat Tailwind CSS dari CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Konfigurasi kustom Tailwind */
@@ -122,15 +117,43 @@
         .grid-custom-cols {
             grid-template-columns: repeat(var(--board-size), minmax(0, 1fr));
         }
+
+        /* BARU: Style untuk pop-up reward */
+        .reward-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        .reward-popup-content {
+            background-color: #1A1A1A;
+            border: 2px solid #60A5FA;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+            max-width: 90%;
+            width: 400px;
+        }
     </style>
 </head>
 <body class="bg-gray-950 text-gray-200">
 
-    <!-- Kontainer utama game -->
     <div class="bg-gray-900 border border-gray-700 rounded-lg shadow-xl p-5 md:p-6 space-y-4 max-w-md w-full flex flex-col items-center glow-border-blue">
         <h1 class="text-3xl md:text-4xl font-cyber text-green-400 glow-text-green mb-3 text-center">XOX Siber</h1>
 
-        <!-- Pilihan Mode Pemain -->
+        <div class="text-xl md:text-2xl font-cyber text-yellow-400 glow-text-blue text-center">
+            Koin Anda: <span id="playerCoinsDisplay">0</span>
+        </div>
+
         <div class="flex space-x-4 mb-4">
             <button id="modeAiButton" class="px-4 py-2 bg-blue-600 text-white font-cyber text-sm rounded-full hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 glow-button">
                 Pemain vs. AI
@@ -140,23 +163,30 @@
             </button>
         </div>
 
-        <!-- Area status game -->
         <div id="gameStatus" class="text-xl md:text-2xl font-cyber text-blue-400 glow-text-blue mb-3 text-center min-h-[2.5rem]">
             Giliran: X
         </div>
 
-        <!-- Papan permainan -->
         <div id="gameBoard" class="grid gap-1 md:gap-2 bg-gray-800 p-2 md:p-3 rounded-md border border-gray-700 glow-border-green">
-            <!-- Sel-sel papan akan dibuat oleh JavaScript -->
-        </div>
+            </div>
 
-        <!-- Tombol reset -->
         <button id="resetButton" class="mt-5 px-6 py-2 bg-violet-600 text-white font-cyber text-base rounded-full hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-300 glow-button">
             Mulai Ulang
         </button>
-        <!-- Kontainer untuk iklan, memastikan ruang dialokasikan -->
-        <div class="mt-4 flex justify-center" style="width: 320px; height: 50px;">
+        
+        <div class="mt-4 flex justify-center" style="width: 320px; height: 50px; overflow: hidden;">
             <ins style="width: 320px;height:50px" data-width="320" data-height="50" class="ib0a0917354" data-domain="//data963.click" data-affquery="/f64c05d7073ed0fa5d77/b0a0917354/?placementName=bannerad"><script src="//data963.click/js/responsive.js" async></script></ins>
+        </div>
+    </div>
+
+    <div id="rewardPopup" class="reward-popup hidden">
+        <div class="reward-popup-content">
+            <h2 class="text-2xl font-cyber text-green-400 mb-4">Selamat! Anda Menang!</h2>
+            <p class="text-lg text-gray-300 mb-6">Tonton iklan untuk mendapatkan <span class="font-bold text-yellow-400">100 Koin!</span></p>
+            <button id="watchAdButton" class="px-6 py-3 bg-blue-600 text-white font-cyber text-lg rounded-full hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 glow-button">
+                Tonton Iklan
+            </button>
+            <p class="text-xs text-gray-500 mt-3">Iklan akan terbuka di tab baru. Kembali ke game ini setelah iklan muncul untuk klaim hadiahmu.</p>
         </div>
     </div>
 
@@ -167,16 +197,22 @@
         const resetButton = document.getElementById('resetButton');
         const modeAiButton = document.getElementById('modeAiButton');
         const modeHumanButton = document.getElementById('modeHumanButton');
+        const playerCoinsDisplay = document.getElementById('playerCoinsDisplay'); // BARU
+        const rewardPopup = document.getElementById('rewardPopup'); // BARU
+        const watchAdButton = document.getElementById('watchAdButton'); // BARU
 
         // --- Konfigurasi Game ---
         const BOARD_SIZE = 5; // Ukuran papan (misalnya, 5 untuk 5x5)
         const WIN_LENGTH = 4; // Berapa markah berturut-turut untuk menang (misalnya, 4)
+        const MONETAG_DIRECT_LINK = 'https://otieu.com/4/9484837'; // BARU: URL Direct Link Monetag kamu
+        const REWARD_COINS_PER_WIN = 100; // BARU: Jumlah koin yang didapat per kemenangan vs AI
 
         // Variabel state game
         let board = []; // Representasi papan 1D
         let currentPlayer = 'X'; // Pemain saat ini (X atau O)
         let gameOver = false; // Status game (true jika game berakhir)
         let playerMode = 'ai'; // Default mode: 'ai' (Pemain vs. AI), can be 'human' (Pemain vs. Pemain)
+        let playerCoins = 0; // BARU: Koin pemain
 
         /**
          * Menginisialisasi atau mereset game.
@@ -188,6 +224,9 @@
             gameOver = false;
             gameBoard.innerHTML = '';
             gameStatus.classList.remove('glow-text-green', 'glow-text-blue', 'text-violet-400');
+
+            // BARU: Sembunyikan pop-up reward saat game direset
+            rewardPopup.classList.add('hidden');
 
             // Set styles for the game board grid dynamically
             gameBoard.style.setProperty('--board-size', BOARD_SIZE);
@@ -222,6 +261,28 @@
             });
 
             updateStatus(`Giliran: ${currentPlayer}`);
+            loadCoins(); // BARU: Muat koin saat inisialisasi game
+        }
+
+        /**
+         * Mengambil koin pemain dari localStorage dan memperbarui tampilan.
+         * BARU
+         */
+        function loadCoins() {
+            playerCoins = parseInt(localStorage.getItem('xoxSiberCoins') || '0');
+            playerCoinsDisplay.textContent = playerCoins;
+        }
+
+        /**
+         * Menambahkan koin kepada pemain dan menyimpannya di localStorage.
+         * BARU
+         * @param {number} amount - Jumlah koin yang akan ditambahkan.
+         */
+        function addCoins(amount) {
+            playerCoins += amount;
+            localStorage.setItem('xoxSiberCoins', playerCoins);
+            playerCoinsDisplay.textContent = playerCoins;
+            console.log(`Koin ditambahkan: ${amount}. Total koin: ${playerCoins}`);
         }
 
         /**
@@ -240,6 +301,10 @@
             if (checkWin(board, currentPlayer, WIN_LENGTH, BOARD_SIZE)) {
                 updateStatus(`Pemain ${currentPlayer} MENANG!`, true, currentPlayer);
                 gameOver = true;
+                // BARU: Tampilkan pop-up reward jika pemain menang melawan AI
+                if (playerMode === 'ai' && currentPlayer === 'X') { // Jika pemain X (manusia) menang melawan AI (O)
+                    showRewardPopup();
+                }
                 return;
             }
 
@@ -282,6 +347,34 @@
                 }
             }
         }
+
+        /**
+         * Menampilkan pop-up reward setelah pemain menang melawan AI.
+         * BARU
+         */
+        function showRewardPopup() {
+            rewardPopup.classList.remove('hidden');
+        }
+
+        /**
+         * Menangani klik tombol "Tonton Iklan" di pop-up reward.
+         * Membuka Direct Link Monetag dan memberikan reward setelah delay.
+         * BARU
+         */
+        watchAdButton.addEventListener('click', () => {
+            rewardPopup.classList.add('hidden'); // Sembunyikan pop-up
+
+            // Buka Direct Link Monetag di tab/jendela baru
+            window.open(MONETAG_DIRECT_LINK, '_blank');
+
+            // Berikan hadiah setelah beberapa waktu untuk memastikan iklan dimuat
+            // Pemain harus kembali ke tab game setelah menonton iklan
+            setTimeout(function() {
+                addCoins(REWARD_COINS_PER_WIN);
+                alert(`Selamat! Anda mendapatkan ${REWARD_COINS_PER_WIN} koin!`); // Notifikasi di dalam game
+            }, 15000); // Tunda 15 detik (sesuaikan, bisa 10-30 detik)
+        });
+
 
         /**
          * Melakukan gerakan di papan dan memperbarui UI.
